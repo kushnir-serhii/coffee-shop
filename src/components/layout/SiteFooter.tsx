@@ -9,28 +9,25 @@ const columns = [
   {
     title: "Coffee",
     links: [
-      ["Single origin", "/coffee?type=single-origin"],
-      ["Blends", "/coffee?type=blend"],
+      ["All coffee", "/coffee"],
       ["Subscription", "/subscription"],
-      ["Wholesale", "/wholesale"],
+      ["Wholesale", "/about#contact"],
     ],
   },
   {
     title: "Equipment",
     links: [
-      ["Grinders", "/equipment?c=grinder"],
-      ["Espresso machines", "/equipment?c=espresso"],
-      ["Kettles & scales", "/equipment?c=kettle"],
-      ["Servicing", "/service"],
+      ["All equipment", "/equipment"],
+      ["Atlas E1 grinder", "/equipment/atlas-e1-grinder"],
+      ["Servicing", "/about#contact"],
     ],
   },
   {
     title: "Company",
     links: [
-      ["Our sourcing", "/sourcing"],
-      ["Roastery", "/about"],
-      ["Journal", "/journal"],
-      ["Contact", "/contact"],
+      ["About", "/about"],
+      ["Our sourcing", "/about#sourcing"],
+      ["Contact", "/about#contact"],
     ],
   },
 ] as const;

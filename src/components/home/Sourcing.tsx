@@ -63,7 +63,7 @@ export function Sourcing() {
             </ol>
 
             <div className="mt-10">
-              <ArrowLink href="/sourcing">Read the sourcing report</ArrowLink>
+              <ArrowLink href="/about#sourcing">Read the sourcing report</ArrowLink>
             </div>
           </div>
         </div>

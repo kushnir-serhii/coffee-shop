@@ -45,6 +45,10 @@ src/
     page.tsx            homepage composition
     coffee/             catalog + [slug] bean PDP
     equipment/          catalog + [slug] equipment PDP
+    subscription/       plan configurator, how it works, FAQ
+    about/              story, sourcing report (#sourcing), roastery, contact (#contact)
+    checkout/           three-step checkout + confirmation
+    legal/[slug]/       terms, privacy, shipping
   components/
     layout/             SiteHeader, SiteFooter, Wordmark
     ui/                 Container/Section, Button, Primitives, Reveal, PageHeader
@@ -52,11 +56,39 @@ src/
     product/            BeanCard + BeanPurchase (lane A)
                         EquipmentCard + EquipmentPurchase (lane B)
     home/               homepage sections, in page order
+    cart/               drawer, header button, quantity stepper
+    checkout/           flow, order summary, confirmation
+    subscription/       plan configurator
+    three/              AtlasE1 model, scene, viewer
   lib/
     brand.ts            brand and locale facts used in copy
     types.ts            Bean / Equipment models, price formatting
     products.ts         sample catalog
+    cart.tsx            cart context + localStorage
+    order.ts            placed order, handed to the confirmation page
+    legal.ts            the three legal documents
+    media.ts            breakpoint and reduced-motion hooks
+    hydration.ts        useHydrated
 ```
+
+## Cart and checkout
+
+State lives in `src/lib/cart.tsx` — a reducer behind context, persisted to
+`localStorage` under `meridian.cart.v1`. Server and first client render both
+start from an empty cart, so markup matches; the stored cart lands on the next
+paint and `ready` guards anything that would otherwise flash.
+
+A cart line is a *configured* product, not a product. The same bean at 250 g /
+espresso is a different line from the same bean at 1 kg / whole bean, and the
+line id is derived from that configuration — which is why nothing in the cart
+branches on lane.
+
+`/checkout` is one page in three steps. Completed steps collapse to a summary
+with an Edit link rather than disappearing, and the order summary stays in view
+throughout. Placing an order writes a `PlacedOrder` to `sessionStorage`
+(`src/lib/order.ts`), clears the cart and routes to `/checkout/confirmation`,
+which is the demo's stand-in for reading an order back by reference. No payment
+is taken and nothing is sent anywhere.
 
 ## Design tokens
 
@@ -74,20 +106,34 @@ layout reads as finished.
 To swap in real assets: replace `ProductStub` with `next/image`, keep the
 `ratio` values, and delete the component. No layout changes are needed.
 
+[`docs/IMAGES.md`](docs/IMAGES.md) is the full shot list — every file the site
+needs, its slot, ratio and minimum size, under the naming scheme the swap
+assumes.
+
 ## 3D
 
-One product — the Atlas E1 grinder — is the designated 3D hero. The mount
-point is marked in `src/components/home/HeroMachine.tsx`. The finish switcher
-in that section is already wired to a colour value, so it will drive the
-model's material once the canvas is in place.
+The Atlas E1 is modelled in \`src/components/three/AtlasE1.tsx\` from three.js
+primitives rather than loaded from a .glb — the shape is a machined billet, so
+boxes, cylinders and a cone cost a few kilobytes of code instead of a 2 MB
+asset, and the finish is a real PBR material instead of a baked texture.
+Proportions follow the spec sheet, 128 × 196 × 390 mm, at 1 unit = 100 mm.
 
-```bash
-npm install three @react-three/fiber @react-three/drei
-```
+\`GrinderScene\` builds its studio from drei lightformers, not an HDR file, so
+nothing is fetched at runtime. \`GrinderViewer\` owns every decision about
+whether 3D runs at all:
 
-Keep it to one compressed `.glb` under ~2 MB, lazy-loaded with
-`next/dynamic({ ssr: false })`, with `ProductStub` as the poster and the
-mobile fallback.
+- below \`lg\` the chunk never loads — the ProductStub is the mobile experience
+- above it, the stub renders immediately and cross-fades out once the canvas
+  reports it is live, so there is no empty box while the chunk downloads
+- the same stub is the WebGL-unavailable fallback
+- the scene idles at a slow spin; the first drag stops it for good and drops
+  the render loop to \`demand\`, so the GPU only works while the user is turning
+  the machine. \`prefers-reduced-motion\` skips the spin entirely
+- the finish switcher lerps the body material rather than snapping it
+
+Cost: about 260 kB gzipped, lazy, desktop only, after first paint. To swap in a
+real model, replace the body of \`AtlasE1\` with a \`useGLTF\` scene and keep the
+\`finish\` prop — nothing outside that file changes.
 
 ## Roadmap
 
@@ -97,8 +143,9 @@ mobile fallback.
 - [x] `/coffee/[slug]` — bean PDP with flavour profile, grind and size selectors
 - [x] `/equipment` — catalog with category tabs and price sort
 - [x] `/equipment/[slug]` — spec-led PDP with finish switcher and comparison table
-- [ ] Cart drawer and checkout
-- [ ] 3D hero on the Atlas E1
+- [x] Cart drawer, three-step checkout and order confirmation
+- [x] 3D hero on the Atlas E1
+- [x] `/subscription`, `/about` and `/legal/*` — nothing in the header or footer 404s
 - [ ] Real photography pass
 
 ---

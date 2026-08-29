@@ -3,7 +3,9 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Label, ProductStub } from "@/components/ui/Primitives";
+import { GrinderViewer } from "@/components/three/GrinderViewer";
 import { formatPrice, type Equipment } from "@/lib/types";
+import { useCart } from "@/lib/cart";
 
 /**
  * Lane B buy box, paired with the visual so the finish switcher updates the
@@ -13,6 +15,7 @@ import { formatPrice, type Equipment } from "@/lib/types";
 export function EquipmentPurchase({ item }: { item: Equipment }) {
   const [active, setActive] = useState(item.colourways[0]);
   const [warranty, setWarranty] = useState(false);
+  const { add } = useCart();
 
   const warrantyCents = Math.round(item.priceCents * 0.08);
   const total = warranty ? item.priceCents + warrantyCents : item.priceCents;
@@ -29,19 +32,22 @@ export function EquipmentPurchase({ item }: { item: Equipment }) {
               background: `radial-gradient(closest-side, ${active.hex}22, transparent)`,
             }}
           />
-          <ProductStub
-            stub={[
-              `color-mix(in srgb, ${active.hex} 22%, #FFFFFF)`,
-              active.hex,
-            ]}
-            ratio="1 / 1"
-            label={`${item.name} in ${active.name}`}
-            className="relative transition-all duration-700 ease-(--ease-out-soft)"
-          />
-          {item.hero && (
-            <p className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-(--radius-pill) border border-line bg-surface/90 px-3 py-1.5 font-mono text-[10px] tracking-wider text-ink-muted uppercase backdrop-blur-sm">
-              Drag to rotate · 3D slot
-            </p>
+          {item.hero ? (
+            <GrinderViewer
+              name={item.name}
+              finishHex={active.hex}
+              finishName={active.name}
+            />
+          ) : (
+            <ProductStub
+              stub={[
+                `color-mix(in srgb, ${active.hex} 22%, #FFFFFF)`,
+                active.hex,
+              ]}
+              ratio="1 / 1"
+              label={`${item.name} in ${active.name}`}
+              className="relative transition-all duration-700 ease-(--ease-out-soft)"
+            />
           )}
         </div>
       </div>
@@ -112,7 +118,27 @@ export function EquipmentPurchase({ item }: { item: Equipment }) {
               {formatPrice(total)}
             </p>
           </div>
-          <Button size="lg" variant="origin" className="min-w-52 flex-1 sm:flex-none">
+          <Button
+            size="lg"
+            variant="origin"
+            className="min-w-52 flex-1 sm:flex-none"
+            onClick={() =>
+              add({
+                kind: "equipment",
+                slug: item.slug,
+                name: item.name,
+                href: `/equipment/${item.slug}`,
+                unitPriceCents: total,
+                options: warranty
+                  ? [active.name, "Extended cover, +2 years"]
+                  : [active.name],
+                stub: [
+                  `color-mix(in srgb, ${active.hex} 22%, #FFFFFF)`,
+                  active.hex,
+                ],
+              })
+            }
+          >
             Add to cart
           </Button>
         </div>

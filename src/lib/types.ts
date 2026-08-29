@@ -70,6 +70,9 @@ export interface Equipment {
 
 export type Product = Bean | Equipment;
 
+/** Re-exported so presentational components import one module, not two. */
+export type { CartLine } from "./cart";
+
 export const isBean = (p: Product): p is Bean => p.kind === "bean";
 export const isEquipment = (p: Product): p is Equipment =>
   p.kind === "equipment";

@@ -3,21 +3,18 @@
 import { useState } from "react";
 import { Container, Section } from "@/components/ui/Container";
 import { ButtonLink } from "@/components/ui/Button";
-import { Label, ProductStub } from "@/components/ui/Primitives";
+import { Label } from "@/components/ui/Primitives";
+import { GrinderViewer } from "@/components/three/GrinderViewer";
 import { Reveal } from "@/components/ui/Reveal";
 import { formatPrice } from "@/lib/types";
 import { heroMachine } from "@/lib/products";
 
 /**
- * The equipment lane's showcase — and the designated slot for the 3D hero.
+ * The equipment lane's showcase, and the home of the 3D hero.
  *
- * 3D INTEGRATION POINT
- * Replace <ProductStub> below with a <Canvas> from @react-three/fiber:
- *   - one compressed .glb (< 2 MB), lazy-loaded via next/dynamic ssr:false
- *   - keep this ProductStub as the poster/fallback and the mobile fallback
- *   - drive the model's material colour from `active.hex`, so the finish
- *     switcher below already works against the real model with no UI change
- * Everything else in this section stays exactly as it is.
+ * <GrinderViewer> owns every decision about whether 3D runs — breakpoint,
+ * loading, WebGL fallback — so this section stays a layout component. The
+ * finish switcher below drives the model's material directly.
  */
 export function HeroMachine() {
   const item = heroMachine;
@@ -35,18 +32,11 @@ export function HeroMachine() {
                 className="pointer-events-none absolute inset-0 -m-10 rounded-full opacity-70 blur-3xl transition-colors duration-700"
                 style={{ background: `radial-gradient(closest-side, ${active.hex}22, transparent)` }}
               />
-              <ProductStub
-                stub={[
-                  `color-mix(in srgb, ${active.hex} 22%, #FFFFFF)`,
-                  active.hex,
-                ]}
-                ratio="1 / 1"
-                label={`${item.name} in ${active.name}`}
-                className="relative transition-all duration-700 ease-(--ease-out-soft)"
+              <GrinderViewer
+                name={item.name}
+                finishHex={active.hex}
+                finishName={active.name}
               />
-              <p className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-(--radius-pill) border border-line bg-surface/90 px-3 py-1.5 font-mono text-[10px] tracking-wider text-ink-muted uppercase backdrop-blur-sm">
-                Drag to rotate · 3D slot
-              </p>
             </div>
           </Reveal>
 

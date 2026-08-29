@@ -3,6 +3,8 @@ import { Inter, Fraunces, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
+import { CartProvider } from "@/lib/cart";
+import { CartDrawer } from "@/components/cart/CartDrawer";
 
 /* Type system:
  *  - Fraunces  → display. A variable serif with an optical size axis; carries
@@ -63,9 +65,12 @@ export default function RootLayout({
         >
           Skip to content
         </a>
-        <SiteHeader />
-        <main id="main">{children}</main>
-        <SiteFooter />
+        <CartProvider>
+          <SiteHeader />
+          <main id="main">{children}</main>
+          <SiteFooter />
+          <CartDrawer />
+        </CartProvider>
       </body>
     </html>
   );

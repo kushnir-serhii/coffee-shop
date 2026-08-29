@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Label } from "@/components/ui/Primitives";
 import { formatPrice, type Bean } from "@/lib/types";
+import { useCart } from "@/lib/cart";
 
 const grinds = [
   { key: "whole", label: "Whole bean", hint: "Grind it yourself" },
@@ -22,6 +23,7 @@ export function BeanPurchase({ bean }: { bean: Bean }) {
   const [variant, setVariant] = useState(bean.variants[0]);
   const [grind, setGrind] = useState<(typeof grinds)[number]>(grinds[0]);
   const [recurring, setRecurring] = useState(false);
+  const { add } = useCart();
 
   const price = recurring
     ? Math.round(variant.priceCents * (1 - SUBSCRIPTION_DISCOUNT))
@@ -147,7 +149,22 @@ export function BeanPurchase({ bean }: { bean: Bean }) {
             )}
           </p>
         </div>
-        <Button size="lg" className="min-w-52 flex-1 sm:flex-none">
+        <Button
+          size="lg"
+          className="min-w-52 flex-1 sm:flex-none"
+          onClick={() =>
+            add({
+              kind: "bean",
+              slug: bean.slug,
+              name: bean.name,
+              href: `/coffee/${bean.slug}`,
+              unitPriceCents: price,
+              options: [variant.size, grind.label],
+              stub: bean.stub,
+              recurring,
+            })
+          }
+        >
           {recurring ? "Start subscription" : "Add to cart"}
         </Button>
       </div>

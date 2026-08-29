@@ -84,7 +84,7 @@ Container widths: `default` 1240px · `wide` 1480px · `prose` 68ch.
 | Hover (image scale) | 700ms, `1.03` |
 
 `prefers-reduced-motion: reduce` collapses every animation and transition to
-0.01ms globally in the base layer. `<Reveal>` uses IntersectionObserver only —
+0.01ms globally in the base layer, and stops the 3D hero from idling. `<Reveal>` uses IntersectionObserver only —
 no animation library — and a `<noscript>` rule forces content visible without
 JavaScript.
 
@@ -103,7 +103,14 @@ JavaScript.
 | `RoastMeter` | Three-step roast indicator (lane A) |
 | `FlavourProfile` | Acidity / body / sweetness / bitterness bars (lane A) |
 | `ProductStub` | Photography placeholder — see README |
+| `GrinderViewer` | Decides whether 3D runs: breakpoint, loading, WebGL fallback |
+| `GrinderScene` | Canvas, lightformer studio, contact shadows, drag controls |
+| `AtlasE1` | The flagship grinder, modelled from primitives |
 | `Reveal` | Scroll-triggered entrance |
+| `TextField` | The only text input — label, hint, error, wired with aria-describedby |
+| `QuantityStepper` | − / value / + , mono tabular value so rows never shift |
+| `CartDrawer` | Slide-over cart: focus trap, Esc, scroll lock, restores focus |
+| `OrderSummary` | Read-only cart mirror, shared by checkout and confirmation |
 | `BeanCard` | Sensory-first card (lane A) |
 | `EquipmentCard` | Spec-first card (lane B) |
 
@@ -118,6 +125,10 @@ JavaScript.
 - Meters expose their values to assistive tech rather than relying on colour
 - Colour is never the only carrier of meaning — the roast meter is labelled,
   finishes are titled
+- The cart drawer is a real `role="dialog"` `aria-modal`: focus moves to close,
+  Tab is trapped inside, Esc dismisses, and focus returns to the trigger
+- Form errors are text tied to the field with `aria-describedby`, never a red
+  border alone; totals sit in an `aria-live="polite"` region
 
 ---
 

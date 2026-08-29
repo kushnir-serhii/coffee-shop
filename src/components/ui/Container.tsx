@@ -8,13 +8,21 @@ const widths: Record<Width, string> = {
   prose: "max-w-[68ch]",
 };
 
+/**
+ * `as` is constrained to elements that take className/children rather than a
+ * bare ElementType: @react-three/fiber augments React's JSX intrinsics with
+ * every three.js object, and an unconstrained ElementType would resolve
+ * against those too.
+ */
+type Polymorphic = ElementType<{ className?: string; children?: ReactNode }>;
+
 export function Container({
   as: Tag = "div",
   width = "default",
   className = "",
   children,
 }: {
-  as?: ElementType;
+  as?: Polymorphic;
   width?: Width;
   className?: string;
   children: ReactNode;

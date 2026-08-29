@@ -146,7 +146,7 @@ export default async function BeanPage({ params }: Params) {
                 ))}
               </dl>
               <div className="mt-6">
-                <ArrowLink href="/sourcing">
+                <ArrowLink href="/about#sourcing">
                   What we paid for this lot
                 </ArrowLink>
               </div>

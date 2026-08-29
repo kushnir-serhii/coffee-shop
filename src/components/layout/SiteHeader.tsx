@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Container } from "@/components/ui/Container";
 import { Wordmark } from "@/components/layout/Wordmark";
+import { CartButton } from "@/components/cart/CartButton";
 
 const nav = [
   { href: "/coffee", label: "Coffee" },
@@ -59,14 +60,7 @@ export function SiteHeader() {
           >
             <SearchIcon />
           </button>
-          <button
-            type="button"
-            className="inline-flex h-10 items-center gap-2 rounded-(--radius-pill) px-3 text-ink transition-colors hover:bg-muted"
-            aria-label="Cart, 2 items"
-          >
-            <BagIcon />
-            <span className="font-mono text-xs tabular-nums">2</span>
-          </button>
+          <CartButton />
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
@@ -115,19 +109,6 @@ function SearchIcon() {
   );
 }
 
-function BagIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden>
-      <path
-        d="M3.75 5.75h10.5l-.8 9a1.2 1.2 0 0 1-1.2 1.1H5.75a1.2 1.2 0 0 1-1.2-1.1l-.8-9Z"
-        stroke="currentColor"
-        strokeWidth="1.3"
-        strokeLinejoin="round"
-      />
-      <path d="M6.5 7.5V5a2.5 2.5 0 0 1 5 0v2.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
-    </svg>
-  );
-}
 
 function MenuIcon({ open }: { open: boolean }) {
   return (
