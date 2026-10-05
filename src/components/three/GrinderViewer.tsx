@@ -2,7 +2,8 @@
 
 import dynamic from "next/dynamic";
 import { useState } from "react";
-import { ProductStub } from "@/components/ui/Primitives";
+import { ProductImage } from "@/components/ui/ProductImage";
+import { equipmentImage } from "@/lib/images";
 import { useMinWidth } from "@/lib/media";
 
 /**
@@ -30,10 +31,15 @@ export function GrinderViewer({
   const [live, setLive] = useState(false);
 
   const poster = (
-    <ProductStub
+    /* Half the 1160px container on the PDP and hero; full width below lg.
+       `key` remounts on a finish change so the photo swaps cleanly. */
+    <ProductImage
+      key={finishName}
+      src={equipmentImage("atlas-e1-grinder", finishName)}
+      alt={`${name} in ${finishName}`}
       stub={[`color-mix(in srgb, ${finishHex} 22%, #FFFFFF)`, finishHex]}
       ratio="1 / 1"
-      label={`${name} in ${finishName}`}
+      sizes="(min-width: 1024px) 560px, 100vw"
       className="size-full transition-all duration-700 ease-(--ease-out-soft)"
     />
   );

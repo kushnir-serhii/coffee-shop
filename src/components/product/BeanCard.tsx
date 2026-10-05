@@ -1,7 +1,9 @@
 import Link from "next/link";
 import type { Bean } from "@/lib/types";
 import { formatPrice } from "@/lib/types";
-import { Badge, ProductStub, RoastMeter } from "@/components/ui/Primitives";
+import { Badge, RoastMeter } from "@/components/ui/Primitives";
+import { ProductImage } from "@/components/ui/ProductImage";
+import { beanImage } from "@/lib/images";
 
 /**
  * Lane A card. Sensory-first: tasting notes read before the price, because
@@ -14,9 +16,13 @@ export function BeanCard({ bean }: { bean: Bean }) {
     <article className="group h-full">
       <Link href={`/coffee/${bean.slug}`} className="flex h-full flex-col">
         <div className="relative overflow-hidden rounded-(--radius-card)">
-          <ProductStub
+          {/* Widest slot is the 3-up related grid at full container width
+              (1160px content / 3); every other grid is narrower */}
+          <ProductImage
+            src={beanImage(bean.slug, "bag")}
+            alt={`${bean.name} coffee bag`}
             stub={bean.stub}
-            label={bean.name}
+            sizes="(min-width: 1024px) 380px, (min-width: 640px) 50vw, 100vw"
             className="transition-transform duration-700 ease-(--ease-out-soft) group-hover:scale-[1.03]"
           />
           {bean.subscription && (

@@ -1,8 +1,10 @@
 import { Container } from "@/components/ui/Container";
 import { ButtonLink } from "@/components/ui/Button";
-import { Label, ProductStub } from "@/components/ui/Primitives";
+import { Label } from "@/components/ui/Primitives";
+import { ProductImage } from "@/components/ui/ProductImage";
 import { Reveal } from "@/components/ui/Reveal";
 import { roastedLine } from "@/lib/brand";
+import { editorialImage } from "@/lib/images";
 
 /**
  * Editorial hero. Asymmetric two-column: type carries the left, a single
@@ -14,7 +16,7 @@ export function Hero() {
       {/* warm light bloom behind the composition */}
       <div
         aria-hidden
-        className="pointer-events-none absolute -top-40 left-1/2 h-[560px] w-[900px] -translate-x-1/2 rounded-full opacity-60 blur-3xl"
+        className="pointer-events-none absolute -top-40 left-1/2 h-140 w-225 -translate-x-1/2 rounded-full opacity-60 blur-3xl"
         style={{
           background:
             "radial-gradient(closest-side, rgba(180,83,42,0.14), transparent)",
@@ -63,13 +65,19 @@ export function Hero() {
 
           <Reveal delay={120}>
             <div className="relative">
-              <ProductStub
+              {/* Right column of the 1.05fr/0.95fr grid: ~521px at the 1240px
+                  container cap, ~42vw down to lg, full width below. Above the
+                  fold, so it is preloaded. */}
+              <ProductImage
+                src={editorialImage("home-hero")}
+                alt="A vintage alarm clock beside a hand coffee grinder and scattered roasted beans, in low warm light"
                 stub={["#EFE2CD", "#B07A4C"]}
                 ratio="4 / 5"
-                label="Hero — coffee and grinder"
+                sizes="(min-width: 1240px) 521px, (min-width: 1024px) 42vw, 100vw"
+                preload
               />
               {/* floating spec card — hints at the equipment lane from the hero */}
-              <div className="absolute -bottom-6 -left-4 hidden w-56 rounded-(--radius-card) border border-line bg-surface/95 p-4 backdrop-blur-sm sm:block md:-left-8">
+              <div className="absolute -bottom-6 -left-4 hidden w-56 rounded-card border border-line bg-surface/95 p-4 backdrop-blur-sm sm:block md:-left-8">
                 <Label>Now brewing</Label>
                 <p className="mt-2 font-display text-lg text-ink">
                   Kirinyaga AB

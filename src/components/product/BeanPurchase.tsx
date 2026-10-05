@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/Button";
 import { Label } from "@/components/ui/Primitives";
 import { formatPrice, type Bean } from "@/lib/types";
 import { useCart } from "@/lib/cart";
+import { beanImage } from "@/lib/images";
 
 const grinds = [
   { key: "whole", label: "Whole bean", hint: "Grind it yourself" },
@@ -161,6 +162,7 @@ export function BeanPurchase({ bean }: { bean: Bean }) {
               unitPriceCents: price,
               options: [variant.size, grind.label],
               stub: bean.stub,
+              image: beanImage(bean.slug, "bag"),
               recurring,
             })
           }

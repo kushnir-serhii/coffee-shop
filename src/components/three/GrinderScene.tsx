@@ -43,7 +43,7 @@ export default function GrinderScene({
       className="absolute inset-0"
     >
       <Canvas
-        shadows
+        shadows="percentage"
         dpr={[1, 1.75]}
         frameloop={spinning ? "always" : "demand"}
         camera={{ position: [2.7, 1.15, 8.6], fov: 28 }}

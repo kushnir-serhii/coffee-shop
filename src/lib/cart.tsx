@@ -33,6 +33,8 @@ export interface CartLine {
   /** Human-readable configuration, e.g. ["250 g", "Espresso"]. */
   options: string[];
   stub: [string, string];
+  /** Photo path, when one exists; carts saved before this field have none. */
+  image?: string;
   recurring?: boolean;
 }
 
@@ -134,7 +136,8 @@ function parseStored(raw: string | null): CartLine[] {
         typeof c.unitPriceCents === "number" &&
         typeof c.qty === "number" &&
         Array.isArray(c.options) &&
-        Array.isArray(c.stub)
+        Array.isArray(c.stub) &&
+        (c.image === undefined || typeof c.image === "string")
       );
     });
   } catch {

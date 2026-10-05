@@ -4,8 +4,8 @@ Turn raw Pixabay downloads into the files the site expects.
 
 You do not rename anything. Pixabay's own download filenames contain the photo
 id — `coffee-grinder-8289194_1280.jpg` — and this script matches on that id,
-crops to the right aspect ratio and writes the correctly named file into the
-right folder.
+crops to the right aspect ratio and writes the correctly named WebP file
+into the right folder.
 
     1. Download the photos from the links in the spreadsheet (the "Download"
        button on each Pixabay page). Pick the largest size offered.
@@ -44,21 +44,21 @@ BEANS = [
 # Pixabay photo id -> list of (output path, target width, height, crop focus)
 JOBS: dict[str, list[tuple[str, int, int, str]]] = {
     # --- editorial ------------------------------------------------------
-    "867036":  [("editorial/about-roastery.jpg", 1200, 1500, "center")],
-    "867034":  [("editorial/about-roasting-floor.jpg", 1200, 1500, "center")],
-    "6959629": [("editorial/sourcing-at-origin.jpg", 1200, 1500, "center")],
-    "9135194": [("editorial/lane-coffee.jpg", 1600, 1000, "center")],
-    "7830087": [("editorial/home-hero.jpg", 1400, 1750, "center")],
+    "867036":  [("editorial/about-roastery.webp", 1200, 1500, "center")],
+    "867034":  [("editorial/about-roasting-floor.webp", 1200, 1500, "center")],
+    "6959629": [("editorial/sourcing-at-origin.webp", 1200, 1500, "center")],
+    "9135194": [("editorial/lane-coffee.webp", 1600, 1000, "center")],
+    "7830087": [("editorial/home-hero.webp", 1400, 1750, "center")],
     # one file, two jobs — see the note this prints at the end
     "8289194": [
-        ("editorial/lane-equipment.jpg", 1600, 1000, "center"),
-        ("equipment/atlas-e1-grinder-graphite.jpg", 1400, 1400, "center"),
+        ("editorial/lane-equipment.webp", 1600, 1000, "center"),
+        ("equipment/atlas-e1-grinder-graphite.webp", 1400, 1400, "center"),
     ],
     # --- coffee gallery, reused across the lots --------------------------
-    "3392168": [(f"coffee/{s}-beans.jpg", 800, 800, "center") for s in BEANS],
-    "1868462": [(f"coffee/{s}-brewed.jpg", 800, 800, "center") for s in BEANS],
-    "662737":  [(f"coffee/{s}-origin.jpg", 800, 800, "center") for s in BEANS[:3]],
-    "1548766": [(f"coffee/{s}-origin.jpg", 800, 800, "center") for s in BEANS[3:]],
+    "3392168": [(f"coffee/{s}-beans.webp", 800, 800, "center") for s in BEANS],
+    "1868462": [(f"coffee/{s}-brewed.webp", 800, 800, "center") for s in BEANS],
+    "662737":  [(f"coffee/{s}-origin.webp", 800, 800, "center") for s in BEANS[:3]],
+    "1548766": [(f"coffee/{s}-origin.webp", 800, 800, "center") for s in BEANS[3:]],
 }
 
 ID_IN_NAME = re.compile(r"(\d{5,9})")
@@ -118,7 +118,7 @@ def main() -> int:
                       f"({w}×{h})  from {src.name}")
                 if not args.dry_run:
                     out.parent.mkdir(parents=True, exist_ok=True)
-                    crop_to(img, w, h, focus).save(out, "JPEG", quality=88, optimize=True)
+                    crop_to(img, w, h, focus).save(out, "WEBP", quality=82, method=6)
                 written += 1
 
     print()

@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/Button";
-import { Label, ProductStub } from "@/components/ui/Primitives";
+import { Label } from "@/components/ui/Primitives";
+import { ProductImage } from "@/components/ui/ProductImage";
+import { equipmentImage } from "@/lib/images";
 import { GrinderViewer } from "@/components/three/GrinderViewer";
 import { formatPrice, type Equipment } from "@/lib/types";
 import { useCart } from "@/lib/cart";
@@ -19,6 +21,13 @@ export function EquipmentPurchase({ item }: { item: Equipment }) {
 
   const warrantyCents = Math.round(item.priceCents * 0.08);
   const total = warranty ? item.priceCents + warrantyCents : item.priceCents;
+
+  // undefined when this finish has no photo; the finish-coloured stub shows
+  const image = equipmentImage(item.slug, active.name);
+  const stub: [string, string] = [
+    `color-mix(in srgb, ${active.hex} 22%, #FFFFFF)`,
+    active.hex,
+  ];
 
   return (
     <div className="grid gap-12 lg:grid-cols-2 lg:gap-20">
@@ -39,13 +48,16 @@ export function EquipmentPurchase({ item }: { item: Equipment }) {
               finishName={active.name}
             />
           ) : (
-            <ProductStub
-              stub={[
-                `color-mix(in srgb, ${active.hex} 22%, #FFFFFF)`,
-                active.hex,
-              ]}
+            /* Half the 1160px container from lg up, full width below; `key`
+               remounts per finish so the photo swaps cleanly */
+            <ProductImage
+              key={active.name}
+              src={image}
+              alt={`${item.name} in ${active.name}`}
+              stub={stub}
               ratio="1 / 1"
-              label={`${item.name} in ${active.name}`}
+              sizes="(min-width: 1024px) 560px, 100vw"
+              preload
               className="relative transition-all duration-700 ease-(--ease-out-soft)"
             />
           )}
@@ -132,10 +144,8 @@ export function EquipmentPurchase({ item }: { item: Equipment }) {
                 options: warranty
                   ? [active.name, "Extended cover, +2 years"]
                   : [active.name],
-                stub: [
-                  `color-mix(in srgb, ${active.hex} 22%, #FFFFFF)`,
-                  active.hex,
-                ],
+                stub,
+                image,
               })
             }
           >

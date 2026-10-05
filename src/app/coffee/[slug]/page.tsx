@@ -7,12 +7,13 @@ import {
   Badge,
   FlavourProfile,
   Label,
-  ProductStub,
   RoastMeter,
   SectionHeading,
 } from "@/components/ui/Primitives";
 import { BeanPurchase } from "@/components/product/BeanPurchase";
 import { BeanCard } from "@/components/product/BeanCard";
+import { ProductImage } from "@/components/ui/ProductImage";
+import { beanImage, type BeanView } from "@/lib/images";
 import { beans, getBean } from "@/lib/products";
 import { brand } from "@/lib/brand";
 
@@ -38,6 +39,12 @@ export default async function BeanPage({ params }: Params) {
   if (!bean) notFound();
 
   const related = beans.filter((b) => b.slug !== bean.slug).slice(0, 3);
+
+  const gallery: { view: BeanView; alt: string }[] = [
+    { view: "beans", alt: `Roasted ${bean.name} beans` },
+    { view: "origin", alt: `${bean.name} origin, ${bean.region}, ${bean.origin}` },
+    { view: "brewed", alt: `Brewed cup of ${bean.name}` },
+  ];
 
   const origin: { label: string; value: string; capitalize?: boolean }[] = [
     { label: "Origin", value: bean.origin },
@@ -68,14 +75,25 @@ export default async function BeanPage({ params }: Params) {
         <div className="grid gap-12 lg:grid-cols-2 lg:gap-20">
           {/* Gallery */}
           <div className="lg:sticky lg:top-28 lg:self-start">
-            <ProductStub stub={bean.stub} ratio="4 / 5" label={bean.name} />
+            {/* Column is half of the 1160px container content less the 80px
+                gap: 540px at most, ~45vw from lg up */}
+            <ProductImage
+              src={beanImage(bean.slug, "bag")}
+              alt={`${bean.name} coffee bag`}
+              stub={bean.stub}
+              ratio="4 / 5"
+              sizes="(min-width: 1240px) 540px, (min-width: 1024px) 45vw, 100vw"
+              preload
+            />
             <div className="mt-3 grid grid-cols-3 gap-3">
-              {["1 / 1", "1 / 1", "1 / 1"].map((r, i) => (
-                <ProductStub
-                  key={i}
+              {gallery.map(({ view, alt }, i) => (
+                <ProductImage
+                  key={view}
+                  src={beanImage(bean.slug, view)}
+                  alt={alt}
                   stub={bean.stub}
-                  ratio={r}
-                  label={`${bean.name} view ${i + 2}`}
+                  ratio="1 / 1"
+                  sizes="(min-width: 1240px) 172px, (min-width: 1024px) 15vw, 33vw"
                   className={i === 0 ? "ring-1 ring-ink ring-inset" : ""}
                 />
               ))}

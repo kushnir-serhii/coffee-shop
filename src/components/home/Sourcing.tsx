@@ -1,7 +1,9 @@
 import { Container, Section } from "@/components/ui/Container";
 import { ArrowLink } from "@/components/ui/Button";
-import { Label, ProductStub } from "@/components/ui/Primitives";
+import { Label } from "@/components/ui/Primitives";
+import { ProductImage } from "@/components/ui/ProductImage";
 import { Reveal } from "@/components/ui/Reveal";
+import { editorialImage } from "@/lib/images";
 
 const steps = [
   {
@@ -28,10 +30,14 @@ export function Sourcing() {
       <Container>
         <div className="grid gap-14 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
           <Reveal>
-            <ProductStub
+            {/* Left column of the 0.9fr/1.1fr grid from lg: ~486px at the
+                1240px container cap; full width of the gutters below lg */}
+            <ProductImage
+              src={editorialImage("sourcing-at-origin")}
+              alt="Hands sorting freshly picked red and yellow coffee cherries in a harvest bucket"
               stub={["#E5D6BF", "#8A6136"]}
               ratio="4 / 5"
-              label="Sourcing at origin"
+              sizes="(min-width: 1240px) 486px, (min-width: 1024px) 40vw, (min-width: 768px) calc(100vw - 80px), calc(100vw - 48px)"
             />
           </Reveal>
 

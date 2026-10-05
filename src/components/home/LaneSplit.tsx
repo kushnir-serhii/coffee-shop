@@ -1,6 +1,8 @@
 import { Container, Section } from "@/components/ui/Container";
 import { ArrowLink } from "@/components/ui/Button";
-import { Label, ProductStub } from "@/components/ui/Primitives";
+import { Label } from "@/components/ui/Primitives";
+import { ProductImage } from "@/components/ui/ProductImage";
+import { editorialImage } from "@/lib/images";
 import { Reveal } from "@/components/ui/Reveal";
 
 /**
@@ -17,6 +19,8 @@ const lanes = [
     href: "/coffee",
     cta: "Shop all coffee",
     stub: ["#EDDCC4", "#B4804A"] as [string, string],
+    image: "lane-coffee",
+    alt: "Close-up of freshly roasted coffee beans",
   },
   {
     accent: "origin",
@@ -27,6 +31,8 @@ const lanes = [
     href: "/equipment",
     cta: "Browse equipment",
     stub: ["#E6E0D6", "#8A8078"] as [string, string],
+    image: "lane-equipment",
+    alt: "A home coffee bar with a lever espresso machine, burr grinder and pour-over kettle on a stone counter",
   },
 ] as const;
 
@@ -38,10 +44,15 @@ export function LaneSplit() {
           {lanes.map((lane, i) => (
             <Reveal key={lane.title} delay={i * 100}>
               <article className="flex h-full flex-col rounded-(--radius-card) border border-line bg-surface p-6 md:p-8">
-                <ProductStub
+                {/* Two columns from md (gap 32px) inside p-8 card padding: 500px
+                    at the 1240px container cap; below md one column inside
+                    24px container gutters and p-6 card padding */}
+                <ProductImage
+                  src={editorialImage(lane.image)}
+                  alt={lane.alt}
                   stub={lane.stub}
                   ratio="16 / 10"
-                  label={lane.title}
+                  sizes="(min-width: 1240px) 500px, (min-width: 768px) calc((100vw - 240px) / 2), calc(100vw - 96px)"
                 />
 
                 <Label

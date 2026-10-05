@@ -1,8 +1,35 @@
 # Image shot list
 
-Every image the site needs, and where it goes. Today each slot renders
-`<ProductStub>` — a gradient placeholder built to the correct aspect ratio, so
-dropping real files in is a swap, not a layout change.
+Every image the site needs, and where it goes. Each slot renders
+`<ProductImage>`: the real photo when it exists, otherwise a gradient
+placeholder at the same aspect ratio, so adding a file never changes the layout.
+
+## Status
+
+**Done:** all 6 coffee packshots and their 18 gallery thumbnails, all 6
+editorial images, and these equipment finishes: Atlas E1 Graphite and Roast,
+Atlas H1 Graphite and Bone, Meridian One Bone, Pour Kettle 900 Bone,
+Gram 0.2 Graphite, Meridian Dripper Bone. These show on the cards, product
+pages, cart drawer and checkout summary.
+
+**Still missing** (these slots show the placeholder):
+
+| File | Product |
+|---|---|
+| `equipment/atlas-e1-grinder-bone.webp` | Atlas E1, Bone |
+| `equipment/meridian-one-espresso-graphite.webp` | Meridian One, Graphite |
+| `equipment/pour-kettle-900-graphite.webp` | Pour Kettle 900, Graphite |
+| `equipment/pour-kettle-900-origin.webp` | Pour Kettle 900, Origin |
+| `equipment/gram-scale-02-bone.webp` | Gram 0.2, Bone |
+| `equipment/meridian-dripper-origin.webp` | Meridian Dripper, Origin |
+| `equipment/meridian-dripper-roast.webp` | Meridian Dripper, Roast |
+| `og/meridian-og.webp` | Social card (also needs wiring in `layout.tsx`) |
+
+**To revisit:** `editorial/about-roastery.webp` shows another roastery's sign
+and logo, and `editorial/home-hero.webp` is a dark shot rather than the light
+studio look described under Art direction.
+
+Update this list when you add a file (see "Adding a photograph" at the end).
 
 Everything lives under `public/images/`, referenced in code as
 `/images/<folder>/<file>`.
@@ -10,10 +37,10 @@ Everything lives under `public/images/`, referenced in code as
 ## Naming
 
 ```
-coffee/<product-slug>-<view>.jpg        view: bag · beans · origin · brewed
-equipment/<product-slug>-<finish>.jpg   finish: the colourway name from products.ts, lowercased
-editorial/<place>.jpg                   named for where it appears, not what is in it
-og/meridian-og.jpg                      social card
+coffee/<product-slug>-<view>.webp        view: bag · beans · origin · brewed
+equipment/<product-slug>-<finish>.webp   finish: the colourway name from products.ts, lowercased
+editorial/<place>.webp                   named for where it appears, not what is in it
+og/meridian-og.webp                      social card
 ```
 
 The slugs are the real ones from `src/lib/products.ts`. Keep them exact and
@@ -21,8 +48,9 @@ wiring the images up is a find-and-replace.
 
 ## Format
 
-Supply JPG (PNG only if you need transparency). `next/image` generates WebP and
-AVIF at build time — do not pre-convert. Sizes below are 2× the largest rendered
+Source files are WebP (`scripts/prepare-images.py` writes them at quality 82).
+`next/image` additionally serves AVIF to browsers that support it, WebP to the rest
+(`images.formats` in `next.config.ts`). Sizes below are 2× the largest rendered
 box; bigger is fine, smaller goes soft on a retina screen. **Crop to the ratio
 before dropping the file in** — the ratios are set in the `ProductStub` calls and
 the layout assumes them.
@@ -38,12 +66,12 @@ drawer and order summary.
 
 | File | Product |
 |---|---|
-| `coffee/kirinyaga-ab-bag.jpg` | Kirinyaga AB — Kenya, light roast |
-| `coffee/finca-la-soledad-bag.jpg` | Finca La Soledad — Guatemala, medium |
-| `coffee/sitio-boa-vista-bag.jpg` | Sítio Boa Vista — Brazil, dark |
-| `coffee/gesha-village-bag.jpg` | Gesha Village Lot 7 — Ethiopia, light |
-| `coffee/el-diviso-bag.jpg` | El Diviso — Colombia, medium |
-| `coffee/house-blend-no-4-bag.jpg` | House Blend No. 4 — blend, medium |
+| `coffee/kirinyaga-ab-bag.webp` | Kirinyaga AB — Kenya, light roast |
+| `coffee/finca-la-soledad-bag.webp` | Finca La Soledad — Guatemala, medium |
+| `coffee/sitio-boa-vista-bag.webp` | Sítio Boa Vista — Brazil, dark |
+| `coffee/gesha-village-bag.webp` | Gesha Village Lot 7 — Ethiopia, light |
+| `coffee/el-diviso-bag.webp` | El Diviso — Colombia, medium |
+| `coffee/house-blend-no-4-bag.webp` | House Blend No. 4 — blend, medium |
 
 ### Equipment packshots, default finish · 1:1 · 1400 × 1400
 
@@ -51,23 +79,23 @@ Used on the equipment card and the PDP.
 
 | File | Product |
 |---|---|
-| `equipment/atlas-e1-grinder-graphite.jpg` | Atlas E1 — see the note below |
-| `equipment/atlas-h1-hand-grinder-graphite.jpg` | Atlas H1 hand grinder |
-| `equipment/meridian-one-espresso-bone.jpg` | Meridian One espresso machine |
-| `equipment/pour-kettle-900-bone.jpg` | Pour Kettle 900 |
-| `equipment/gram-scale-02-graphite.jpg` | Gram 0.2 scale |
-| `equipment/meridian-dripper-bone.jpg` | Meridian Dripper |
+| `equipment/atlas-e1-grinder-graphite.webp` | Atlas E1 — see the note below |
+| `equipment/atlas-h1-hand-grinder-graphite.webp` | Atlas H1 hand grinder |
+| `equipment/meridian-one-espresso-bone.webp` | Meridian One espresso machine |
+| `equipment/pour-kettle-900-bone.webp` | Pour Kettle 900 |
+| `equipment/gram-scale-02-graphite.webp` | Gram 0.2 scale |
+| `equipment/meridian-dripper-bone.webp` | Meridian Dripper |
 
 ### Editorial
 
 | File | Ratio | Size | Where |
 |---|---|---|---|
-| `editorial/home-hero.jpg` | 4:5 | 1400 × 1750 | Homepage hero |
-| `editorial/lane-coffee.jpg` | 16:10 | 1600 × 1000 | Homepage two-lane split, lane A |
-| `editorial/lane-equipment.jpg` | 16:10 | 1600 × 1000 | Homepage two-lane split, lane B |
-| `editorial/sourcing-at-origin.jpg` | 4:5 | 1200 × 1500 | Homepage sourcing section |
-| `editorial/about-roastery.jpg` | 4:5 | 1200 × 1500 | `/about`, story section |
-| `editorial/about-roasting-floor.jpg` | 4:5 | 1200 × 1500 | `/about`, roastery section |
+| `editorial/home-hero.webp` | 4:5 | 1400 × 1750 | Homepage hero |
+| `editorial/lane-coffee.webp` | 16:10 | 1600 × 1000 | Homepage two-lane split, lane A |
+| `editorial/lane-equipment.webp` | 16:10 | 1600 × 1000 | Homepage two-lane split, lane B |
+| `editorial/sourcing-at-origin.webp` | 4:5 | 1200 × 1500 | Homepage sourcing section |
+| `editorial/about-roastery.webp` | 4:5 | 1200 × 1500 | `/about`, story section |
+| `editorial/about-roasting-floor.webp` | 4:5 | 1200 × 1500 | `/about`, roastery section |
 
 ---
 
@@ -76,8 +104,8 @@ Used on the equipment card and the PDP.
 ### Coffee gallery thumbnails · 1:1 · 800 × 800
 
 Three per bean, shown under the PDP main image:
-`-beans.jpg` (macro of the roasted beans), `-origin.jpg` (farm or drying beds),
-`-brewed.jpg` (the cup). 18 files across the six lots.
+`-beans.webp` (macro of the roasted beans), `-origin.webp` (farm or drying beds),
+`-brewed.webp` (the cup). 18 files across the six lots.
 
 ### Extra equipment finishes · 1:1 · 1400 × 1400
 
@@ -94,7 +122,7 @@ The finish switcher swaps the image, so each colourway wants its own file.
 
 ### Social
 
-`og/meridian-og.jpg` · 1200 × 630. Not wired up yet — add it to `openGraph.images`
+`og/meridian-og.webp` · 1200 × 630. Not wired up yet — add it to `openGraph.images`
 in `src/app/layout.tsx` when it exists.
 
 ---
@@ -122,11 +150,26 @@ It is rendered in real 3D on desktop, so its photographs only appear as the
 mobile view, the loading poster and the WebGL fallback. If you would rather shoot
 it and drop the 3D, that is a one-line change in `GrinderViewer`.
 
-## Swapping placeholders for real files
+## Generated images (packshots, extra finishes, social card)
 
-1. Add an `image` field to `Bean` and `Equipment` in `src/lib/types.ts`, fill it in `src/lib/products.ts`.
-2. Replace `<ProductStub stub={…} ratio="4 / 5" />` with `<Image src={…} width height alt />`, keeping the ratio.
-3. Delete `ProductStub` from `src/components/ui/Primitives.tsx` once nothing imports it.
+Drop the files (jfif, jpg, png or webp) in `public/images/_generated/`. The
+filename only needs a product keyword and, for equipment, optionally a finish:
+`kirinyaga.jfif`, `kettle graphite.jfif`, `h1 bone.png`, `og.jfif`. Then:
 
-The layout does not change. That was the point of building the placeholder to
-the right ratios.
+```bash
+python scripts/prepare-generated.py --help-names   # keywords per product
+python scripts/prepare-generated.py --dry-run      # check the matching
+python scripts/prepare-generated.py                # crop, resize, save as WebP
+```
+
+## Adding a photograph
+
+Every slot renders `<ProductImage>` (`src/components/ui/ProductImage.tsx`): a
+`next/image` at the slot's ratio, or the `ProductStub` placeholder when the file
+does not exist yet. To light up a slot:
+
+1. Put the WebP at its path above.
+2. Add that path to the `available` set in `src/lib/images.ts`.
+
+An equipment finish without its own photo keeps the stub in that finish's
+colour rather than borrowing another finish's photo.

@@ -11,7 +11,7 @@ python scripts/prepare-images.py --dry-run   # see what it would do
 python scripts/prepare-images.py             # actually write the files
 ```
 
-It crops each image to the right aspect ratio, resizes it, and writes it out
+It crops each image to the right aspect ratio, resizes it, and writes it out as WebP
 under the correct name in `coffee/`, `equipment/` or `editorial/`.
 
 This folder is working material — nothing here is served. Delete it once the

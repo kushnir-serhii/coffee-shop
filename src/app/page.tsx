@@ -1,7 +1,7 @@
 import { Hero } from "@/components/home/Hero";
 import { LaneSplit } from "@/components/home/LaneSplit";
 import { FeaturedBeans } from "@/components/home/FeaturedBeans";
-import { HeroMachine } from "@/components/home/HeroMachine";
+// import { HeroMachine } from "@/components/home/HeroMachine";
 import { Sourcing } from "@/components/home/Sourcing";
 import { EquipmentRow } from "@/components/home/EquipmentRow";
 import { SubscriptionCta } from "@/components/home/SubscriptionCta";
@@ -24,7 +24,7 @@ export default function HomePage() {
       <Hero />
       <LaneSplit />
       <FeaturedBeans />
-      <HeroMachine />
+      {/* <HeroMachine /> */}
       <Sourcing />
       <EquipmentRow />
       <SubscriptionCta />

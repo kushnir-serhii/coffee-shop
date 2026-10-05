@@ -1,7 +1,8 @@
 import Link from "next/link";
 import type { Equipment } from "@/lib/types";
 import { formatPrice } from "@/lib/types";
-import { ProductStub } from "@/components/ui/Primitives";
+import { ProductImage } from "@/components/ui/ProductImage";
+import { equipmentImage } from "@/lib/images";
 
 const categoryLabel: Record<Equipment["category"], string> = {
   grinder: "Grinder",
@@ -21,10 +22,14 @@ export function EquipmentCard({ item }: { item: Equipment }) {
   return (
     <article className="group flex h-full flex-col rounded-(--radius-card) border border-line bg-surface p-4 transition-colors duration-300 hover:border-ink-muted">
       <Link href={`/equipment/${item.slug}`} className="flex h-full flex-col">
-        <ProductStub
+        {/* Widest slot is the 3-up grid at full container width; narrower
+            grids and the single-column mobile layout are covered by the rest */}
+        <ProductImage
+          src={equipmentImage(item.slug, item.colourways[0].name)}
+          alt={`${item.name} in ${item.colourways[0].name}`}
           stub={item.stub}
           ratio="1 / 1"
-          label={item.name}
+          sizes="(min-width: 1024px) 360px, (min-width: 640px) 50vw, 100vw"
           className="transition-transform duration-700 ease-(--ease-out-soft) group-hover:scale-[1.03]"
         />
 

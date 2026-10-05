@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 import { ButtonLink } from "@/components/ui/Button";
-import { Label, ProductStub } from "@/components/ui/Primitives";
+import { Label } from "@/components/ui/Primitives";
+import { ProductImage } from "@/components/ui/ProductImage";
 import { QuantityStepper } from "@/components/cart/QuantityStepper";
 import { useCart } from "@/lib/cart";
 import { formatPrice } from "@/lib/types";
@@ -158,10 +159,13 @@ export function CartDrawer() {
                     className="w-20 shrink-0"
                     tabIndex={-1}
                   >
-                    <ProductStub
+                    {/* Fixed w-20 thumbnail */}
+                    <ProductImage
+                      src={line.image}
+                      alt={line.name}
                       stub={line.stub}
                       ratio="4 / 5"
-                      label={line.name}
+                      sizes="80px"
                     />
                   </Link>
 

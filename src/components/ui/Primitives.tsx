@@ -1,5 +1,5 @@
-import type { ReactNode } from "react";
 import type { Bean, RoastLevel } from "@/lib/types";
+import type { ReactNode } from "react";
 
 /* -------------------------------------------------------------------------
  * Small shared primitives. Kept in one file while the system is young —
@@ -40,7 +40,7 @@ export function Badge({
   } as const;
   return (
     <span
-      className={`inline-flex items-center rounded-(--radius-pill) border px-2.5 py-1 text-xs font-medium ${tones[tone]}`}
+      className={`inline-flex items-center rounded-pill border px-2.5 py-1 text-xs font-medium ${tones[tone]}`}
     >
       {children}
     </span>
@@ -103,7 +103,7 @@ export function RoastMeter({ roast }: { roast: RoastLevel }) {
         {swatches.map((bg, i) => (
           <span
             key={bg}
-            className={`h-1.5 w-5 rounded-(--radius-pill) ${bg} ${
+            className={`h-1.5 w-5 rounded-pill ${bg} ${
               i + 1 <= step ? "opacity-100" : "opacity-20"
             }`}
           />
@@ -128,12 +128,12 @@ export function FlavourProfile({ profile }: { profile: Bean["profile"] }) {
         <div key={name} className="grid grid-cols-[7rem_1fr_2.5rem] items-center gap-3">
           <dt className="text-xs text-ink-muted">{name}</dt>
           <dd
-            className="h-1 rounded-(--radius-pill) bg-line"
+            className="h-1 rounded-pill bg-line"
             role="img"
             aria-label={`${name} ${value} out of 100`}
           >
             <span
-              className="block h-full rounded-(--radius-pill) bg-roast"
+              className="block h-full rounded-pill bg-roast"
               style={{ width: `${value}%` }}
             />
           </dd>
@@ -169,16 +169,16 @@ export function ProductStub({
   const [from, to] = stub;
   return (
     <div
-      className={`grain relative overflow-hidden rounded-(--radius-card) ${className}`}
+      className={`grain relative overflow-hidden rounded-card ${className}`}
       style={{ aspectRatio: ratio }}
       role="img"
       aria-label={label ? `${label} — placeholder image` : "Placeholder image"}
     >
       <div
         className="absolute inset-0"
-        style={{
-          backgroundImage: `radial-gradient(120% 90% at 50% 8%, ${from} 0%, ${to} 100%)`,
-        }}
+        // style={{
+        //   backgroundImage: `radial-gradient(120% 90% at 50% 8%, ${from} 0%, ${to} 100%)`,
+        // }}
       />
       {/* soft directional light, so flat colour reads as a lit object */}
       <div className="absolute inset-0 bg-linear-to-b from-white/25 via-transparent to-black/12" />

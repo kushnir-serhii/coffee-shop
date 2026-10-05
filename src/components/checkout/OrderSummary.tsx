@@ -1,4 +1,4 @@
-import { ProductStub } from "@/components/ui/Primitives";
+import { ProductImage } from "@/components/ui/ProductImage";
 import { formatPrice, type CartLine } from "@/lib/types";
 
 /**
@@ -28,7 +28,14 @@ export function OrderSummary({
         {lines.map((line) => (
           <li key={line.id} className="flex gap-4 py-4 first:pt-0">
             <div className="w-14 shrink-0">
-              <ProductStub stub={line.stub} ratio="4 / 5" label={line.name} />
+              {/* Fixed w-14 thumbnail */}
+              <ProductImage
+                src={line.image}
+                alt={line.name}
+                stub={line.stub}
+                ratio="4 / 5"
+                sizes="56px"
+              />
             </div>
             <div className="flex min-w-0 flex-1 flex-col">
               <div className="flex items-start justify-between gap-3">

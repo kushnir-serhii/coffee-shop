@@ -2,9 +2,11 @@ import type { Metadata } from "next";
 import { Container, Section } from "@/components/ui/Container";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { ArrowLink, ButtonLink } from "@/components/ui/Button";
-import { Label, ProductStub, Rule } from "@/components/ui/Primitives";
+import { Label, Rule } from "@/components/ui/Primitives";
+import { ProductImage } from "@/components/ui/ProductImage";
 import { Reveal } from "@/components/ui/Reveal";
 import { brand } from "@/lib/brand";
+import { editorialImage } from "@/lib/images";
 
 export const metadata: Metadata = {
   title: "About",
@@ -100,10 +102,14 @@ export default function AboutPage() {
             </div>
 
             <Reveal>
-              <ProductStub
+              {/* Right column of the 1.1fr/0.9fr grid from lg: ~486px at the
+                  1240px container cap; full width of the gutters below lg */}
+              <ProductImage
+                src={editorialImage("about-roastery")}
+                alt="The brick facade of a historic coffee roastery, a classic car parked outside"
                 stub={["#E5D6BF", "#8A6136"]}
                 ratio="4 / 5"
-                label="The roastery"
+                sizes="(min-width: 1240px) 486px, (min-width: 1024px) 40vw, (min-width: 768px) calc(100vw - 80px), calc(100vw - 48px)"
               />
             </Reveal>
           </div>
@@ -189,10 +195,14 @@ export default function AboutPage() {
         <Container>
           <div className="grid gap-14 lg:grid-cols-2 lg:gap-20">
             <Reveal>
-              <ProductStub
+              {/* Left half of an even two-column grid from lg: 540px at the
+                  1240px container cap; full width of the gutters below lg */}
+              <ProductImage
+                src={editorialImage("about-roasting-floor")}
+                alt="Inside the roastery: stacked green coffee sacks, storage bins and roasting equipment"
                 stub={["#EDE7DE", "#8A8078"]}
                 ratio="4 / 5"
-                label="Roasting floor"
+                sizes="(min-width: 1240px) 540px, (min-width: 1024px) 42vw, (min-width: 768px) calc(100vw - 80px), calc(100vw - 48px)"
               />
             </Reveal>
             <div className="flex flex-col justify-center">
