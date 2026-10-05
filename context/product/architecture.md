@@ -11,7 +11,7 @@
 - **Language:** TypeScript 5 in strict mode, with the `@/*` alias for `src/` _(existing)_.
 - **Styling:** Tailwind CSS v4 through `@tailwindcss/postcss`; design tokens live in `src/app/globals.css` _(existing)_. The shared palette, type scale and spacing serve both lanes (see `docs/DESIGN.md`).
 - **Typography:** Fraunces (display), Inter (UI and body) and JetBrains Mono (numerals and specs) through `next/font/google` _(existing)_.
-- **3D Rendering:** three.js with @react-three/fiber and @react-three/drei. The hand-built Atlas E1 model loads lazily, on desktop only, and falls back to an image _(existing)_. Phase 3 "Photoreal 3D Grinder": load a compressed glTF/GLB (Draco or Meshopt) with drei's `useGLTF` _(assumption; alternative: replace the 3D view with a photo turntable)_.
+- **3D Rendering:** three.js with @react-three/fiber and @react-three/drei. The hand-built Atlas E1 model loads lazily, on desktop only, and falls back to an image _(existing)_. 3D is currently disabled by the `SHOW_3D` flag in `src/components/three/GrinderViewer.tsx`, so the Atlas E1 page shows its photo on all screen sizes _(existing)_. Phase 3 "Photoreal 3D Grinder": load a compressed glTF/GLB (Draco or Meshopt) with drei's `useGLTF` _(assumption; alternative: replace the 3D view with a photo turntable)_.
 - **Internationalisation (Phase 3):** locale-prefixed routes (`/uk/...`) using the App Router's built-in i18n pattern (middleware/proxy plus dictionaries) _(confirmed)_. Product copy is translated in the typed catalog modules. UAH prices are stored as fixed per-product values rather than converted live, so the demo stays deterministic.
 
 ---
@@ -31,9 +31,9 @@
 
 - **Rendering Strategy:** static generation for every route, with `generateStaticParams` and `notFound()` for product and legal slugs _(existing)_. Phase 2 adds `not-found.tsx`, `error.tsx` and `loading.tsx` _(assumption: App Router file conventions)_.
 - **Hosting:** Vercel, Hobby tier, with an automatic preview deployment for each branch and production deploys from `main` _(confirmed)_.
-- **Domain & Metadata:** replace the placeholder `metadataBase` (`https://meridian-coffee.example`) with the real deployment URL _(assumption)_.
-- **Social Share Card (Phase 2):** a static `opengraph-image` file in `src/app/` using the App Router's metadata file convention _(assumption; alternative: generate it with `next/og` `ImageResponse`)_.
-- **Image Pipeline:** Python scripts (`scripts/prepare-images.py`, `scripts/prepare-generated.py`) crop and convert source photos to WebP. `next/image` serves AVIF/WebP _(existing)_. Raw sources in `public/images/_downloads/` should move out of `public/` or be ignored by git, so they are not deployed _(assumption)_.
+- **Domain & Metadata:** `metadataBase` is unset, so on Vercel it resolves to `VERCEL_PROJECT_PRODUCTION_URL` _(existing)_.
+- **Social Share Card:** site-wide card set in `src/app/layout.tsx` as `openGraph.images` (`/images/og/meridian-og.webp`) with `twitter.card = summary_large_image` _(existing)_. Coffee pages use their bag photo and equipment pages use their default-finish photo, both set per route's `generateMetadata` _(existing)_. The `opengraph-image` file convention is deliberately not used, since file-based metadata would override the per-product images _(existing)_.
+- **Image Pipeline:** Python scripts (`scripts/prepare-images.py`, `scripts/prepare-generated.py`) read originals from `assets/images/` and crop and convert them to WebP in `public/images/`. `next/image` serves AVIF/WebP _(existing)_. Stock photos for `prepare-images.py` are in `assets/images/_downloads/`, raw photos for `prepare-generated.py` are in `assets/images/_generated/`, keeping them out of `public/` so they are not deployed _(existing)_.
 - **CI/CD:** a GitHub Actions workflow that runs lint, type-check, build and end-to-end tests on each pull request _(confirmed)_.
 - **Package Manager:** npm, with `package-lock.json` _(existing)_.
 

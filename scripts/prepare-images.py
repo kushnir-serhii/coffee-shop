@@ -9,7 +9,7 @@ into the right folder.
 
     1. Download the photos from the links in the spreadsheet (the "Download"
        button on each Pixabay page). Pick the largest size offered.
-    2. Drop them, untouched, in public/images/_downloads/
+    2. Drop them, untouched, in assets/images/_downloads/
     3. python scripts/prepare-images.py
 
 Run it as many times as you like — it only rewrites what it finds.
@@ -29,7 +29,7 @@ except ImportError:
     sys.exit("Pillow is missing.  pip install Pillow")
 
 ROOT = Path(__file__).resolve().parent.parent
-DOWNLOADS = ROOT / "public" / "images" / "_downloads"
+DOWNLOADS = ROOT / "assets" / "images" / "_downloads"
 IMAGES = ROOT / "public" / "images"
 
 BEANS = [

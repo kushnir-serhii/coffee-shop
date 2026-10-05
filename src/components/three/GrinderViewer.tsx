@@ -18,6 +18,10 @@ const GrinderScene = dynamic(() => import("@/components/three/GrinderScene"), {
   ssr: false,
 });
 
+// Phase 3: Photoreal 3D Grinder — set to true to re-enable canvas rendering.
+// With this flag off, GrinderScene is never rendered, so the three.js chunk is skipped.
+const SHOW_3D = false;
+
 export function GrinderViewer({
   name,
   finishHex,
@@ -44,7 +48,7 @@ export function GrinderViewer({
     />
   );
 
-  if (!wide) return poster;
+  if (!SHOW_3D || !wide) return poster;
 
   return (
     <div className="relative aspect-square">

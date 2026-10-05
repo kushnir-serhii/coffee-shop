@@ -6,6 +6,7 @@ import { ArrowLink } from "@/components/ui/Button";
 import { SectionHeading } from "@/components/ui/Primitives";
 import { EquipmentPurchase } from "@/components/product/EquipmentPurchase";
 import { EquipmentCard } from "@/components/product/EquipmentCard";
+import { equipmentImage } from "@/lib/images";
 import { equipment, getEquipment } from "@/lib/products";
 import { formatPrice, type Equipment } from "@/lib/types";
 
@@ -27,7 +28,19 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { slug } = await params;
   const item = getEquipment(slug);
   if (!item) return { title: "Not found" };
-  return { title: item.name, description: item.tagline };
+  const image = equipmentImage(slug, item.colourways[0].name);
+  return {
+    title: item.name,
+    description: item.tagline,
+    // No product image: skip openGraph so the layout's brand card is inherited.
+    ...(image && {
+      openGraph: {
+        title: item.name,
+        description: item.tagline,
+        images: [image],
+      },
+    }),
+  };
 }
 
 export default async function EquipmentDetailPage({ params }: Params) {
@@ -68,70 +81,72 @@ export default async function EquipmentDetailPage({ params }: Params) {
 
       {/* Comparison — only when there is a same-category product to compare */}
       {specLabels.length > 0 && (
-      <Section muted>
-        <Container>
-          <SectionHeading
-            eyebrow="Side by side"
-            title="How it compares"
-            intro={`Every ${categoryNoun[item.category]} we sell, line for line, so you can tell what the price difference actually buys.`}
-          />
+        <Section muted>
+          <Container>
+            <SectionHeading
+              eyebrow="Side by side"
+              title="How it compares"
+              intro={`Every ${categoryNoun[item.category]} we sell, line for line, so you can tell what the price difference actually buys.`}
+            />
 
-          <div className="mt-12 overflow-x-auto">
-            <table className="w-full min-w-[42rem] border-collapse text-left">
-              <thead>
-                <tr>
-                  <th scope="col" className="w-44 py-4 pr-4 align-bottom">
-                    <span className="label text-ink-muted">Specification</span>
-                  </th>
-                  {comparison.map((c) => (
-                    <th
-                      key={c.slug}
-                      scope="col"
-                      className="border-b-2 border-line py-4 pr-6 align-bottom"
-                    >
-                      <span
-                        className={`block font-display text-lg ${
-                          c.slug === item.slug ? "text-ink" : "text-ink-body"
-                        }`}
+            <div className="mt-12 overflow-x-auto">
+              <table className="w-full min-w-[42rem] border-collapse text-left">
+                <thead>
+                  <tr>
+                    <th scope="col" className="w-44 py-4 pr-4 align-bottom">
+                      <span className="label text-ink-muted">
+                        Specification
+                      </span>
+                    </th>
+                    {comparison.map((c) => (
+                      <th
+                        key={c.slug}
+                        scope="col"
+                        className="border-b-2 border-line py-4 pr-6 align-bottom"
                       >
-                        {c.name}
-                      </span>
-                      <span className="mt-1 block font-mono text-xs text-ink-muted tabular-nums">
-                        {formatPrice(c.priceCents)}
-                      </span>
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {specLabels.map((label) => (
-                  <tr key={label}>
-                    <th
-                      scope="row"
-                      className="border-b border-line py-3.5 pr-4 text-sm font-normal text-ink-muted"
-                    >
-                      {label}
-                    </th>
-                    {comparison.map((c) => {
-                      const spec = c.specs.find((s) => s.label === label);
-                      return (
-                        <td
-                          key={c.slug}
-                          className={`border-b border-line py-3.5 pr-6 font-mono text-sm ${
-                            spec ? "text-ink" : "text-ink-muted"
+                        <span
+                          className={`block font-display text-lg ${
+                            c.slug === item.slug ? "text-ink" : "text-ink-body"
                           }`}
                         >
-                          {spec ? spec.value : "—"}
-                        </td>
-                      );
-                    })}
+                          {c.name}
+                        </span>
+                        <span className="mt-1 block font-mono text-xs text-ink-muted tabular-nums">
+                          {formatPrice(c.priceCents)}
+                        </span>
+                      </th>
+                    ))}
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </Container>
-      </Section>
+                </thead>
+                <tbody>
+                  {specLabels.map((label) => (
+                    <tr key={label}>
+                      <th
+                        scope="row"
+                        className="border-b border-line py-3.5 pr-4 text-sm font-normal text-ink-muted"
+                      >
+                        {label}
+                      </th>
+                      {comparison.map((c) => {
+                        const spec = c.specs.find((s) => s.label === label);
+                        return (
+                          <td
+                            key={c.slug}
+                            className={`border-b border-line py-3.5 pr-6 font-mono text-sm ${
+                              spec ? "text-ink" : "text-ink-muted"
+                            }`}
+                          >
+                            {spec ? spec.value : "—"}
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </Container>
+        </Section>
       )}
 
       {/* Rest of the range */}

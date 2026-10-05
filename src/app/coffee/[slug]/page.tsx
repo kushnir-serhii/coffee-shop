@@ -27,9 +27,15 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { slug } = await params;
   const bean = getBean(slug);
   if (!bean) return { title: "Not found" };
+  const description = `${bean.origin} · ${bean.process} · ${bean.notes.join(", ")}. Roasted in ${brand.city}.`;
+  const image = beanImage(slug, "bag");
   return {
     title: bean.name,
-    description: `${bean.origin} · ${bean.process} · ${bean.notes.join(", ")}. Roasted in ${brand.city}.`,
+    description,
+    // No product image: skip openGraph so the layout's brand card is inherited.
+    ...(image && {
+      openGraph: { title: bean.name, description, images: [image] },
+    }),
   };
 }
 
@@ -42,7 +48,10 @@ export default async function BeanPage({ params }: Params) {
 
   const gallery: { view: BeanView; alt: string }[] = [
     { view: "beans", alt: `Roasted ${bean.name} beans` },
-    { view: "origin", alt: `${bean.name} origin, ${bean.region}, ${bean.origin}` },
+    {
+      view: "origin",
+      alt: `${bean.name} origin, ${bean.region}, ${bean.origin}`,
+    },
     { view: "brewed", alt: `Brewed cup of ${bean.name}` },
   ];
 

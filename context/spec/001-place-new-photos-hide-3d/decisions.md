@@ -1,0 +1,32 @@
+# Decisions — 001 Place New Photos and Hide the 3D Grinder
+
+- [spec] ASSUMED: The new photos to place are the raw downloads not yet on the site: `e1 bone`, `espresso graphite`, `kettle graphite`, `kettle origin`, `scale bone`, `dripper origin`, `dripper roast`, `hero`, `lane-equipment`, `og`. The other downloads are already processed and live.
+- [spec] ASSUMED: No files exist yet for an About roastery reshoot or separate per-coffee gallery photos, so these are out of scope.
+- [spec] Q: The homepage flagship Atlas E1 section is hidden. With 3D gone, what should happen to it? → A: Keep it hidden.
+- [spec] Q: Two finishes have no photo (E1 Bone, Meridian One Graphite). How should they look? → A: The owner added them (`e1 bone.jfif`, `espresso graphite.jfif`), so all 13 finishes now have photos. Placeholder restyling is out of scope.
+- [spec] Q: Which preview image should a shared product page link show? → A: The product's own photo on coffee and equipment pages; the brand share card everywhere else.
+- [spec] TECH-HINT: Per-product share image = the coffee bag photo or the equipment default-finish photo, set in each product route's metadata (`openGraph.images`); the site-wide default is `og/meridian-og.webp` in the layout.
+- [spec] TECH-HINT: The raw `.jfif` files sit in `public/images/_downloads/`, not `_generated/`. Process them with `scripts/prepare-generated.py` (keyword-based names), then add the paths to the `available` set in `src/lib/images.ts`.
+- [spec] TECH-HINT: "Hide 3D, decide later" means the one-line switch in `GrinderViewer` (always render the poster). Keep the three/ components in the repo, don't delete them.
+- [spec] TECH-HINT: Wire the OG image into `openGraph.images` in `src/app/layout.tsx`. Keep `public/images/_downloads/` out of the deploy.
+- [tech] ASSUMED: The social card is `og/meridian-og.jpg` (JPEG, which the script writes on purpose), not `.webp` as the earlier TECH-HINT said.
+- [tech] ASSUMED: Remove the placeholder `metadataBase` so Next falls back to `VERCEL_PROJECT_PRODUCTION_URL`. Use config `openGraph.images`, not the `opengraph-image` file convention, because file-based metadata would override the per-product images.
+- [tech] ASSUMED: 3D is hidden with a module constant `SHOW_3D = false` in `GrinderViewer` (not a prop).
+- [tech] Q: How should the raw source photos be kept off the live site? → A: Move `_downloads/` and `_generated/` out of `public/` to `assets/images/` (still in git) and update both scripts.
+- [tech] Q: Product share previews use WebP. Is that OK? → A: WebP is fine. Add JPEG copies later only if LinkedIn fails.
+- [tech] Q: How should this feature be tested? → A: Lint + build plus one consolidated verify-ui pass and curl checks. Playwright stays in Phase 3.
+- [tasks] ASSUMED: Tests are wanted (SKIP_TESTS = false). The decisions say "one consolidated verify-ui pass", and the Verify tasks stay smoke-only.
+- [tasks] ASSUMED: QA agent is `testing-expert`, since it is installed. The final slice uses the standard template wording.
+- [tasks] ASSUMED: Slices are ordered: raw sources move, photos and manifest, hide 3D, share previews, docs, tests.
+- [tasks] Q: Is the plan OK as saved? → A: Looks good — keep it as saved
+- [implement] ASSUMED: The 25 raw .jfif photos were already on disk in public/images/_generated/ (not _downloads/), so they now live in assets/images/_generated/. The 10 stock .jpg files + README live in assets/images/_downloads/. Later tasks stage from assets/images/_generated/.
+- [implement] NOTE: 9 of 10 new sources are smaller than their slot (1024px squares upscaled to 1400; hero 928x1152 to 1400x1750). They were placed anyway. Per tech-spec Risks, re-source before merge — owner's call.
+- [implement] NOTE: The catalog has 15 equipment colourways, not 13 as the spec says; all 15 now resolve to a photo.
+- [implement] NOTE: Slice 2 smoke ran without a browser (Playwright MCP failed to connect): lint/build OK, page HTML references the new image paths, /_next/image returns 200 for them, and the finish swap was confirmed by reading EquipmentPurchase.tsx. The hero frame ratio and the Graphite click are not yet checked visually; leave them for /awos:verify.
+- [implement] NOTE: Slice 3 smoke also ran without a browser: lint/build OK, Roast/Bone image URLs return 200, GrinderScene reachable only after the SHOW_3D guard. Not yet seen in a browser: no <canvas> at 1280px, Graphite→Roast→Bone swap, no three.js chunk request; leave them for /awos:verify.
+- [implement] NOTE: Local build bakes og:image as http://localhost:3000/... (metadataBase unset, expected per tech spec). On Vercel the build uses VERCEL_PROJECT_PRODUCTION_URL. Check the real preview card after deploy (opengraph.xyz / Telegram).
+- [implement] Q: Folder roles and image format? → A: `assets/` holds only source images (original formats such as .jfif/.jpg). Every image the site uses is WebP in `public/images/`, and the site reads from there; JPEG is only the original format before conversion. This overrides the earlier [tech] ASSUMED `.jpg` social card: the card is `og/meridian-og.webp`.
+- [implement] ASSUMED: Slice 6 tests use Node's built-in test runner (node --test) with fetch against `next start` plus filesystem checks — no new dependencies, since Playwright/Vitest stay in Phase 3. Click-only criteria (finish swap, canvas at 1280px, hero ratio) stay manual for /awos:verify.
+- [verify] Q: Did you manually confirm finish swaps, cart/checkout photo, hero ratio and Atlas E1 no-canvas/finish swap? → A: All four confirmed
+- [verify] Q: Catalog has 15 colourways, spec says 13. Complete as is? → A: Yes, complete it
+- [verify] NOTE: Acceptance suite run once (SKIP_BUILD=1, build newer than all sources, isolated port): 31/31 pass. No browser tool (Playwright MCP failed), so no screenshots in docs/screenshots/.
