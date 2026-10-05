@@ -42,6 +42,13 @@ export function Select<T extends string>({
     return () => document.removeEventListener("pointerdown", onPointer);
   }, [open]);
 
+  useEffect(() => {
+    if (!open) return;
+    document
+      .getElementById(`${listId}-${active}`)
+      ?.scrollIntoView({ block: "nearest" });
+  }, [open, active, listId]);
+
   const openList = () => {
     setActive(selectedIndex);
     setOpen(true);
@@ -103,7 +110,7 @@ export function Select<T extends string>({
         aria-activedescendant={open ? `${listId}-${active}` : undefined}
         onClick={() => (open ? setOpen(false) : openList())}
         onKeyDown={onKeyDown}
-        className={`flex h-9 w-full items-center justify-between gap-3 rounded-(--radius-pill) border bg-surface pr-3 pl-4 text-sm text-ink transition-colors duration-200 focus:outline-none ${
+        className={`flex h-9 w-full items-center justify-between gap-3 rounded-pill border bg-surface pr-3 pl-4 text-sm text-ink transition-colors duration-200 focus:outline-none ${
           open
             ? "border-roast"
             : "border-line hover:border-ink-muted focus-visible:border-roast"
@@ -113,7 +120,7 @@ export function Select<T extends string>({
         <svg
           aria-hidden
           viewBox="0 0 16 16"
-          className={`size-3.5 shrink-0 text-ink-muted transition-transform duration-300 ease-(--ease-out-soft) ${
+          className={`size-3.5 shrink-0 text-ink-muted transition-transform duration-300 ease-out-soft ${
             open ? "rotate-180" : ""
           }`}
         >
@@ -132,7 +139,7 @@ export function Select<T extends string>({
         id={listId}
         role="listbox"
         aria-labelledby={labelledBy}
-        className={`absolute right-0 z-20 mt-2 min-w-full origin-top overflow-hidden rounded-(--radius-card) border border-line bg-surface p-1.5 shadow-[0_12px_32px_-12px_rgb(0_0_0/0.18)] transition-[opacity,transform,visibility] duration-200 ease-(--ease-out-soft) motion-reduce:transition-none ${
+        className={`absolute right-0 z-20 mt-2 max-h-72 min-w-full origin-top overflow-y-auto rounded-card border border-line bg-surface p-1.5 shadow-[0_12px_32px_-12px_rgb(0_0_0/0.18)] transition-[opacity,transform,visibility] duration-200 ease-out-soft motion-reduce:transition-none ${
           open
             ? "visible translate-y-0 scale-100 opacity-100"
             : "invisible -translate-y-1 scale-[0.97] opacity-0"

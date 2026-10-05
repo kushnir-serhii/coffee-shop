@@ -58,7 +58,7 @@ export function EquipmentPurchase({ item }: { item: Equipment }) {
               ratio="1 / 1"
               sizes="(min-width: 1024px) 560px, 100vw"
               preload
-              className="relative transition-all duration-700 ease-(--ease-out-soft)"
+              className="relative transition-all duration-700 ease-out-soft"
             />
           )}
         </div>
@@ -88,7 +88,7 @@ export function EquipmentPurchase({ item }: { item: Equipment }) {
                   aria-checked={selected}
                   aria-label={c.name}
                   onClick={() => setActive(c)}
-                  className={`size-10 rounded-full transition-transform duration-200 ease-(--ease-out-soft) hover:scale-110 ${
+                  className={`size-10 rounded-full transition-transform duration-200 ease-out-soft hover:scale-110 ${
                     selected
                       ? "ring-2 ring-ink ring-offset-2 ring-offset-canvas"
                       : "ring-1 ring-line ring-inset"
@@ -101,12 +101,12 @@ export function EquipmentPurchase({ item }: { item: Equipment }) {
         </fieldset>
 
         {/* Extended warranty */}
-        <label className="mt-9 flex cursor-pointer items-start gap-4 rounded-(--radius-card) border border-line p-4 transition-colors hover:border-ink-muted">
+        <label className="mt-9 flex cursor-pointer items-start gap-4 rounded-card border border-line p-4 transition-colors hover:border-ink-muted">
           <input
             type="checkbox"
             checked={warranty}
             onChange={(e) => setWarranty(e.target.checked)}
-            className="mt-0.5 size-4 accent-[var(--color-origin)]"
+            className="mt-0.5 size-4 accent-origin"
           />
           <span className="flex-1">
             <span className="flex items-baseline justify-between gap-4">

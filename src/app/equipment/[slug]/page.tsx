@@ -90,7 +90,7 @@ export default async function EquipmentDetailPage({ params }: Params) {
             />
 
             <div className="mt-12 overflow-x-auto">
-              <table className="w-full min-w-[42rem] border-collapse text-left">
+              <table className="w-full min-w-2xl border-collapse text-left">
                 <thead>
                   <tr>
                     <th scope="col" className="w-44 py-4 pr-4 align-bottom">

@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Container } from "@/components/ui/Container";
 import { Wordmark } from "@/components/layout/Wordmark";
 import { CartButton } from "@/components/cart/CartButton";
+import { SearchDialog } from "@/components/layout/SearchDialog";
 
 const nav = [
   { href: "/coffee", label: "Coffee" },
@@ -16,6 +17,7 @@ const nav = [
 export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -57,6 +59,8 @@ export function SiteHeader() {
             type="button"
             className="hidden size-10 items-center justify-center rounded-(--radius-pill) text-ink transition-colors hover:bg-muted md:inline-flex"
             aria-label="Search"
+            aria-haspopup="dialog"
+            onClick={() => setSearchOpen(true)}
           >
             <SearchIcon />
           </button>
@@ -93,9 +97,24 @@ export function SiteHeader() {
                 </Link>
               </li>
             ))}
+            <li>
+              <button
+                type="button"
+                onClick={() => {
+                  setOpen(false);
+                  setSearchOpen(true);
+                }}
+                aria-haspopup="dialog"
+                className="block w-full rounded-lg px-2 py-3 text-left text-lg text-ink transition-colors hover:bg-muted"
+              >
+                Search
+              </button>
+            </li>
           </ul>
         </Container>
       </div>
+
+      {searchOpen && <SearchDialog onClose={() => setSearchOpen(false)} />}
     </header>
   );
 }

@@ -24,6 +24,8 @@ export interface Bean {
   region: string;
   altitudeMasl: [number, number];
   producer: string;
+  /** What we paid the producer, per kg of green coffee (FOB), in cents. */
+  paidPerKgCents: number;
   varietal: string;
   process: Process;
   roast: RoastLevel;

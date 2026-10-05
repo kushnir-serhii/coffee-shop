@@ -16,6 +16,7 @@ import { ProductImage } from "@/components/ui/ProductImage";
 import { beanImage, type BeanView } from "@/lib/images";
 import { beans, getBean } from "@/lib/products";
 import { brand } from "@/lib/brand";
+import { formatPrice } from "@/lib/types";
 
 type Params = { params: Promise<{ slug: string }> };
 
@@ -59,6 +60,10 @@ export default async function BeanPage({ params }: Params) {
     { label: "Origin", value: bean.origin },
     { label: "Region", value: bean.region },
     { label: "Producer", value: bean.producer },
+    {
+      label: "Paid to producer",
+      value: `${formatPrice(bean.paidPerKgCents)} / kg`,
+    },
     { label: "Varietal", value: bean.varietal },
     { label: "Process", value: bean.process, capitalize: true },
     {
@@ -139,7 +144,7 @@ export default async function BeanPage({ params }: Params) {
             </div>
 
             {/* Flavour */}
-            <div className="mt-14 rounded-(--radius-card) bg-muted p-6 md:p-8">
+            <div className="mt-14 rounded-card bg-muted p-6 md:p-8">
               <Label as="h2" tone="ink">
                 Flavour profile
               </Label>

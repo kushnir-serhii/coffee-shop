@@ -5,12 +5,7 @@ import { Container, Section } from "@/components/ui/Container";
 import { ButtonLink } from "@/components/ui/Button";
 import { Label } from "@/components/ui/Primitives";
 import { formatPrice } from "@/lib/types";
-
-const frequencies = [
-  { key: "1w", label: "Weekly", weeks: 1, discount: 0.15 },
-  { key: "2w", label: "Every 2 weeks", weeks: 2, discount: 0.12 },
-  { key: "4w", label: "Monthly", weeks: 4, discount: 0.1 },
-] as const;
+import { defaultFrequency, frequencies, type Frequency } from "@/lib/subscription";
 
 const sizes = [
   { key: "250", label: "250 g", base: 1550 },
@@ -24,7 +19,7 @@ const sizes = [
  * real state, not a static banner.
  */
 export function SubscriptionCta() {
-  const [freq, setFreq] = useState<(typeof frequencies)[number]>(frequencies[1]);
+  const [freq, setFreq] = useState<Frequency>(defaultFrequency);
   const [size, setSize] = useState<(typeof sizes)[number]>(sizes[0]);
 
   const perDelivery = Math.round(size.base * (1 - freq.discount));

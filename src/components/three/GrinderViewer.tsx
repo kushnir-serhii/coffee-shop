@@ -44,7 +44,7 @@ export function GrinderViewer({
       stub={[`color-mix(in srgb, ${finishHex} 22%, #FFFFFF)`, finishHex]}
       ratio="1 / 1"
       sizes="(min-width: 1024px) 560px, 100vw"
-      className="size-full transition-all duration-700 ease-(--ease-out-soft)"
+      className="size-full transition-all duration-700 ease-out-soft"
     />
   );
 
@@ -53,7 +53,7 @@ export function GrinderViewer({
   return (
     <div className="relative aspect-square">
       <div
-        className={`absolute inset-0 transition-opacity duration-700 ease-(--ease-out-soft) ${
+        className={`absolute inset-0 transition-opacity duration-700 ease-out-soft ${
           live ? "opacity-0" : "opacity-100"
         }`}
         aria-hidden={live}
@@ -69,7 +69,7 @@ export function GrinderViewer({
       />
 
       <p
-        className={`pointer-events-none absolute bottom-4 left-1/2 -translate-x-1/2 rounded-(--radius-pill) border border-line bg-surface/90 px-3 py-1.5 font-mono text-[10px] tracking-wider text-ink-muted uppercase backdrop-blur-sm transition-opacity duration-700 ${
+        className={`pointer-events-none absolute bottom-4 left-1/2 -translate-x-1/2 rounded-pill border border-line bg-surface/90 px-3 py-1.5 font-mono text-[10px] tracking-wider text-ink-muted uppercase backdrop-blur-sm transition-opacity duration-700 ${
           live ? "opacity-100" : "opacity-0"
         }`}
       >

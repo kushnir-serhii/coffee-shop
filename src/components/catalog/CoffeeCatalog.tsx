@@ -174,7 +174,7 @@ export function CoffeeCatalog({ beans }: { beans: Bean[] }) {
               ))}
             </ul>
           ) : (
-            <div className="mt-16 rounded-(--radius-card) border border-dashed border-line py-20 text-center">
+            <div className="mt-16 rounded-card border border-dashed border-line py-20 text-center">
               <p className="font-display text-xl text-ink">
                 Nothing matches that combination
               </p>
