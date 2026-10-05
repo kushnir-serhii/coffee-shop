@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { Label } from "@/components/ui/Primitives";
+import { Select } from "@/components/ui/Select";
 import { FilterGroup } from "@/components/catalog/FilterGroup";
 import { BeanCard } from "@/components/product/BeanCard";
 import type { Bean, Process, RoastLevel } from "@/lib/types";
@@ -79,7 +80,8 @@ export function CoffeeCatalog({ beans }: { beans: Bean[] }) {
       (b) =>
         predicate(b) === value &&
         (processes.length === 0 || processes.includes(b.process)) &&
-        (methods.length === 0 || methods.some((m) => b.brewMethods.includes(m))),
+        (methods.length === 0 ||
+          methods.some((m) => b.brewMethods.includes(m))),
     ).length;
 
   const activeCount = roasts.length + processes.length + methods.length;
@@ -88,7 +90,9 @@ export function CoffeeCatalog({ beans }: { beans: Bean[] }) {
     <T,>(setter: React.Dispatch<React.SetStateAction<T[]>>) =>
     (value: T) =>
       setter((prev) =>
-        prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value],
+        prev.includes(value)
+          ? prev.filter((v) => v !== value)
+          : [...prev, value],
       );
 
   return (
@@ -148,21 +152,16 @@ export function CoffeeCatalog({ beans }: { beans: Bean[] }) {
               {results.length} {results.length === 1 ? "coffee" : "coffees"}
             </p>
             <div className="flex items-center gap-3">
-              <label htmlFor="sort" className="label text-ink-muted">
+              <span id="sort-label" className="label text-ink-muted">
                 Sort
-              </label>
-              <select
-                id="sort"
+              </span>
+              <Select
                 value={sort}
-                onChange={(e) => setSort(e.target.value as Sort)}
-                className="h-9 rounded-(--radius-pill) border border-line bg-surface px-3.5 text-sm text-ink transition-colors hover:border-ink-muted focus:border-roast focus:outline-none"
-              >
-                {sorts.map((s) => (
-                  <option key={s.value} value={s.value}>
-                    {s.label}
-                  </option>
-                ))}
-              </select>
+                options={sorts}
+                onChange={setSort}
+                labelledBy="sort-label"
+                className="w-48"
+              />
             </div>
           </div>
 
@@ -175,7 +174,7 @@ export function CoffeeCatalog({ beans }: { beans: Bean[] }) {
               ))}
             </ul>
           ) : (
-            <div className="mt-16 rounded-(--radius-card) border border-dashed border-line py-20 text-center">
+            <div className="mt-16 rounded-card border border-dashed border-line py-20 text-center">
               <p className="font-display text-xl text-ink">
                 Nothing matches that combination
               </p>

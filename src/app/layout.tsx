@@ -32,7 +32,6 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://meridian-coffee.example"),
   title: {
     default: "Meridian — Coffee & Equipment",
     template: "%s · Meridian",
@@ -44,7 +43,16 @@ export const metadata: Metadata = {
     description:
       "Single-lot coffee roasted in small batches, and the equipment to do it justice.",
     type: "website",
+    images: [
+      {
+        url: "/images/og/meridian-og.webp",
+        width: 1200,
+        height: 630,
+        alt: "Meridian — Coffee & Equipment",
+      },
+    ],
   },
+  twitter: { card: "summary_large_image" },
 };
 
 export default function RootLayout({
@@ -61,7 +69,7 @@ export default function RootLayout({
         </noscript>
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-100 focus:rounded-pill focus:bg-ink focus:px-4 focus:py-2 focus:text-sm focus:text-canvas"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-100 focus:rounded-pill focus:bg-ink focus:px-4 focus:py-2 focus:text-sm focus:text-canvas"
         >
           Skip to content
         </a>

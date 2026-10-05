@@ -7,6 +7,8 @@ import { ProductImage } from "@/components/ui/ProductImage";
 import { Reveal } from "@/components/ui/Reveal";
 import { brand } from "@/lib/brand";
 import { editorialImage } from "@/lib/images";
+import { beans } from "@/lib/products";
+import { formatPrice } from "@/lib/types";
 
 export const metadata: Metadata = {
   title: "About",
@@ -20,36 +22,16 @@ export const metadata: Metadata = {
  * three thin pages would have been three pages with nothing on them.
  */
 
-const producers = [
-  {
-    lot: "Kirinyaga AB",
-    producer: "Kabare Farmers Co-op",
-    country: "Kenya",
-    paid: "€6.40 / kg",
-    market: "3.1×",
-  },
-  {
-    lot: "Finca La Soledad",
-    producer: "Ana Beatriz Molina",
-    country: "Guatemala",
-    paid: "€7.10 / kg",
-    market: "3.4×",
-  },
-  {
-    lot: "Sítio Boa Vista",
-    producer: "Marcos Ferreira",
-    country: "Brazil",
-    paid: "€5.20 / kg",
-    market: "2.6×",
-  },
-  {
-    lot: "Gedeb Worka",
-    producer: "Worka Sakaro washing station",
-    country: "Ethiopia",
-    paid: "€8.05 / kg",
-    market: "3.9×",
-  },
-];
+/** ICE Arabica reference (€/kg green) behind the "over C-market" column. */
+const C_MARKET_EUR_PER_KG = 2.05;
+
+const producers = beans.map((b) => ({
+  lot: b.name,
+  producer: b.producer,
+  country: b.origin,
+  paid: `${formatPrice(b.paidPerKgCents)} / kg`,
+  market: `${(b.paidPerKgCents / 100 / C_MARKET_EUR_PER_KG).toFixed(1)}×`,
+}));
 
 const numbers = [
   ["Producers bought from", "24"],

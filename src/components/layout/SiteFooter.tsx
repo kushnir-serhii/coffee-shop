@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { Label } from "@/components/ui/Primitives";
-import { Button } from "@/components/ui/Button";
 import { Wordmark } from "@/components/layout/Wordmark";
+import { NewsletterForm } from "@/components/layout/NewsletterForm";
 import { brand } from "@/lib/brand";
 
 const columns = [
@@ -45,26 +45,7 @@ export function SiteFooter() {
               in small batches in {brand.city}, shipped within {brand.dispatchHours}{" "}
               hours of roast.
             </p>
-            <form className="mt-8">
-              <Label as="p" className="mb-3">
-                Brewing notes, monthly
-              </Label>
-              <div className="flex gap-2">
-                <label className="sr-only" htmlFor="footer-email">
-                  Email address
-                </label>
-                <input
-                  id="footer-email"
-                  type="email"
-                  required
-                  placeholder="you@example.com"
-                  className="h-11 min-w-0 flex-1 rounded-(--radius-pill) border border-line bg-surface px-4 text-sm text-ink placeholder:text-ink-muted focus:border-roast focus:outline-none"
-                />
-                <Button type="submit" size="md">
-                  Subscribe
-                </Button>
-              </div>
-            </form>
+            <NewsletterForm />
           </div>
 
           {/* Link columns */}

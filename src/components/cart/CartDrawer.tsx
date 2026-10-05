@@ -6,7 +6,7 @@ import { ButtonLink } from "@/components/ui/Button";
 import { Label } from "@/components/ui/Primitives";
 import { ProductImage } from "@/components/ui/ProductImage";
 import { QuantityStepper } from "@/components/cart/QuantityStepper";
-import { useCart } from "@/lib/cart";
+import { FREE_SHIPPING_CENTS, useCart } from "@/lib/cart";
 import { formatPrice } from "@/lib/types";
 
 const FOCUSABLE =
@@ -143,7 +143,7 @@ export function CartDrawer() {
                   <span
                     className="block h-full rounded-(--radius-pill) bg-roast transition-[width] duration-500 ease-(--ease-out-soft)"
                     style={{
-                      width: `${Math.min(100, (totals.subtotalCents / 4000) * 100)}%`,
+                      width: `${Math.min(100, (totals.subtotalCents / FREE_SHIPPING_CENTS) * 100)}%`,
                     }}
                   />
                 </div>
@@ -245,7 +245,7 @@ export function CartDrawer() {
                 Checkout
               </ButtonLink>
               <p className="mt-3 text-center text-xs text-ink-muted">
-                Taxes included · 30-day returns
+                Taxes included · 30-day returns on equipment
               </p>
             </footer>
           </>

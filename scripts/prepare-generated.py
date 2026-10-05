@@ -2,7 +2,7 @@
 """
 Turn AI-generated images (jfif / jpg / png / webp) into the files the site expects.
 
-    1. Drop the generated files in public/images/_generated/
+    1. Drop the generated files in assets/images/_generated/
     2. Make sure each filename contains a keyword for the product (see the
        table printed by `--help-names`), e.g.  kirinyaga.jfif,
        kettle-graphite.jfif, h1 bone (2).jfif, og.jfif
@@ -10,7 +10,6 @@ Turn AI-generated images (jfif / jpg / png / webp) into the files the site expec
        python scripts/prepare-generated.py             # write the files
 
 Each image is centre-cropped to the right ratio, resized and saved as WebP
-(the social card as JPG, because some networks still ignore WebP previews)
 under the correct name in coffee/, equipment/ or og/.
 """
 
@@ -27,7 +26,7 @@ except ImportError:
     sys.exit("Pillow is missing.  pip install Pillow")
 
 ROOT = Path(__file__).resolve().parent.parent
-SRC = ROOT / "public" / "images" / "_generated"
+SRC = ROOT / "assets" / "images" / "_generated"
 IMAGES = ROOT / "public" / "images"
 EXTS = {".jfif", ".jpg", ".jpeg", ".png", ".webp"}
 
@@ -76,7 +75,7 @@ def match(stem: str) -> tuple[str, int, int, str] | str:
     t = norm(stem)
 
     if has(t, "og") or has(t, "social") or has(t, "meridian og"):
-        return ("og/meridian-og.jpg", 1200, 630, "JPEG")
+        return ("og/meridian-og.webp", 1200, 630, "WEBP")
 
     for kw, out, w, h in EDITORIAL:
         if has(t, kw):
@@ -120,7 +119,7 @@ def help_names() -> None:
     print("\nEditorial")
     for kw, out, w, h in EDITORIAL:
         print(f"  {out:<22} keyword: {kw:<16} ({w}x{h})")
-    print("\nSocial card   (1200x630  -> og/meridian-og.jpg)   keywords: og, social")
+    print("\nSocial card   (1200x630  -> og/meridian-og.webp)  keywords: og, social")
 
 
 def main() -> int:
@@ -162,10 +161,7 @@ def main() -> int:
                 out = IMAGES / rel
                 out.parent.mkdir(parents=True, exist_ok=True)
                 im = crop_to(img, w, h)
-                if fmt == "WEBP":
-                    im.save(out, "WEBP", quality=82, method=6)
-                else:
-                    im.save(out, "JPEG", quality=88, optimize=True, progressive=True)
+                im.save(out, "WEBP", quality=82, method=6)
             written += 1
 
     print(f"\n{written} file(s) {'planned' if args.dry_run else 'written'}.")

@@ -6,6 +6,8 @@ import { Label } from "@/components/ui/Primitives";
 import { formatPrice, type Bean } from "@/lib/types";
 import { useCart } from "@/lib/cart";
 import { beanImage } from "@/lib/images";
+import { defaultFrequency, frequencies, type Frequency } from "@/lib/subscription";
+import { FREE_SHIPPING_CENTS } from "@/lib/cart";
 
 const grinds = [
   { key: "whole", label: "Whole bean", hint: "Grind it yourself" },
@@ -13,8 +15,6 @@ const grinds = [
   { key: "filter", label: "Filter", hint: "Medium" },
   { key: "french", label: "French press", hint: "Coarse" },
 ] as const;
-
-const SUBSCRIPTION_DISCOUNT = 0.12;
 
 /**
  * The buy box. Three decisions — size, grind, one-off or subscription — kept
@@ -24,10 +24,11 @@ export function BeanPurchase({ bean }: { bean: Bean }) {
   const [variant, setVariant] = useState(bean.variants[0]);
   const [grind, setGrind] = useState<(typeof grinds)[number]>(grinds[0]);
   const [recurring, setRecurring] = useState(false);
+  const [freq, setFreq] = useState<Frequency>(defaultFrequency);
   const { add } = useCart();
 
   const price = recurring
-    ? Math.round(variant.priceCents * (1 - SUBSCRIPTION_DISCOUNT))
+    ? Math.round(variant.priceCents * (1 - freq.discount))
     : variant.priceCents;
 
   return (
@@ -98,7 +99,7 @@ export function BeanPurchase({ bean }: { bean: Bean }) {
               {
                 on: true,
                 title: "Subscribe",
-                sub: `Save ${Math.round(SUBSCRIPTION_DISCOUNT * 100)}% · pause any time`,
+                sub: "Save up to 15% · pause any time",
               },
             ].map((mode) => {
               const selected = recurring === mode.on;
@@ -132,6 +133,34 @@ export function BeanPurchase({ bean }: { bean: Bean }) {
               );
             })}
           </div>
+
+          {recurring && (
+            <div
+              className="mt-3 grid gap-2 sm:grid-cols-3"
+              role="radiogroup"
+              aria-label="Delivery rhythm"
+            >
+              {frequencies.map((f) => (
+                <button
+                  key={f.key}
+                  type="button"
+                  role="radio"
+                  aria-checked={f.key === freq.key}
+                  onClick={() => setFreq(f)}
+                  className={`flex items-center justify-between gap-3 rounded-(--radius-card) border px-4 py-3 text-left transition-colors duration-200 ${
+                    f.key === freq.key
+                      ? "border-ink bg-surface"
+                      : "border-line hover:border-ink-muted"
+                  }`}
+                >
+                  <span className="text-sm text-ink">{f.label}</span>
+                  <span className="font-mono text-xs text-origin tabular-nums">
+                    −{Math.round(f.discount * 100)}%
+                  </span>
+                </button>
+              ))}
+            </div>
+          )}
         </fieldset>
       )}
 
@@ -160,7 +189,9 @@ export function BeanPurchase({ bean }: { bean: Bean }) {
               name: bean.name,
               href: `/coffee/${bean.slug}`,
               unitPriceCents: price,
-              options: [variant.size, grind.label],
+              options: recurring
+                ? [variant.size, grind.label, freq.label]
+                : [variant.size, grind.label],
               stub: bean.stub,
               image: beanImage(bean.slug, "bag"),
               recurring,
@@ -172,8 +203,10 @@ export function BeanPurchase({ bean }: { bean: Bean }) {
       </div>
 
       <p className="mt-4 text-xs text-ink-muted">
-        {variant.size} · {grind.label.toLowerCase()} · free shipping over{" "}
-        {formatPrice(4000)}
+        {variant.size} · {grind.label.toLowerCase()} ·{" "}
+        {recurring
+          ? "free shipping on subscriptions"
+          : `free shipping over ${formatPrice(FREE_SHIPPING_CENTS)}`}
       </p>
     </div>
   );

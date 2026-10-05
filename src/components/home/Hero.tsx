@@ -70,7 +70,7 @@ export function Hero() {
                   fold, so it is preloaded. */}
               <ProductImage
                 src={editorialImage("home-hero")}
-                alt="A vintage alarm clock beside a hand coffee grinder and scattered roasted beans, in low warm light"
+                alt="A Meridian bag of Gesha Village coffee beside a graphite Atlas grinder, a freshly ground portafilter and an empty espresso cup on a wooden counter"
                 stub={["#EFE2CD", "#B07A4C"]}
                 ratio="4 / 5"
                 sizes="(min-width: 1240px) 521px, (min-width: 1024px) 42vw, 100vw"
@@ -80,10 +80,10 @@ export function Hero() {
               <div className="absolute -bottom-6 -left-4 hidden w-56 rounded-card border border-line bg-surface/95 p-4 backdrop-blur-sm sm:block md:-left-8">
                 <Label>Now brewing</Label>
                 <p className="mt-2 font-display text-lg text-ink">
-                  Kirinyaga AB
+                  Gesha Village Lot 7
                 </p>
                 <p className="mt-1 text-xs text-ink-body">
-                  Blackcurrant · Grapefruit
+                  Jasmine · Bergamot
                 </p>
                 <div className="mt-3 flex items-center justify-between border-t border-line pt-3 font-mono text-xs text-ink-muted">
                   <span>18 g in</span>

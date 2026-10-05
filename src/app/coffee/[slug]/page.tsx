@@ -16,6 +16,7 @@ import { ProductImage } from "@/components/ui/ProductImage";
 import { beanImage, type BeanView } from "@/lib/images";
 import { beans, getBean } from "@/lib/products";
 import { brand } from "@/lib/brand";
+import { formatPrice } from "@/lib/types";
 
 type Params = { params: Promise<{ slug: string }> };
 
@@ -27,9 +28,15 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { slug } = await params;
   const bean = getBean(slug);
   if (!bean) return { title: "Not found" };
+  const description = `${bean.origin} · ${bean.process} · ${bean.notes.join(", ")}. Roasted in ${brand.city}.`;
+  const image = beanImage(slug, "bag");
   return {
     title: bean.name,
-    description: `${bean.origin} · ${bean.process} · ${bean.notes.join(", ")}. Roasted in ${brand.city}.`,
+    description,
+    // No product image: skip openGraph so the layout's brand card is inherited.
+    ...(image && {
+      openGraph: { title: bean.name, description, images: [image] },
+    }),
   };
 }
 
@@ -42,7 +49,10 @@ export default async function BeanPage({ params }: Params) {
 
   const gallery: { view: BeanView; alt: string }[] = [
     { view: "beans", alt: `Roasted ${bean.name} beans` },
-    { view: "origin", alt: `${bean.name} origin, ${bean.region}, ${bean.origin}` },
+    {
+      view: "origin",
+      alt: `${bean.name} origin, ${bean.region}, ${bean.origin}`,
+    },
     { view: "brewed", alt: `Brewed cup of ${bean.name}` },
   ];
 
@@ -50,6 +60,10 @@ export default async function BeanPage({ params }: Params) {
     { label: "Origin", value: bean.origin },
     { label: "Region", value: bean.region },
     { label: "Producer", value: bean.producer },
+    {
+      label: "Paid to producer",
+      value: `${formatPrice(bean.paidPerKgCents)} / kg`,
+    },
     { label: "Varietal", value: bean.varietal },
     { label: "Process", value: bean.process, capitalize: true },
     {
@@ -130,7 +144,7 @@ export default async function BeanPage({ params }: Params) {
             </div>
 
             {/* Flavour */}
-            <div className="mt-14 rounded-(--radius-card) bg-muted p-6 md:p-8">
+            <div className="mt-14 rounded-card bg-muted p-6 md:p-8">
               <Label as="h2" tone="ink">
                 Flavour profile
               </Label>

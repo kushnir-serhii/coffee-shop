@@ -35,14 +35,14 @@ _Once the foundational features are complete, we will move on to these high-valu
 
 - [ ] **Real Photography Pass** _(in progress)_
   - [x] **Coffee and Editorial Photos:** Real bag shots, gallery images and editorial images replace the placeholders across the homepage, catalogs, product pages, cart and checkout.
-  - [ ] **Complete Equipment Finishes:** Photograph the 7 finishes that still show a placeholder, so buyers always see the exact finish they will receive.
+  - [x] **Complete Equipment Finishes:** Photograph the 7 finishes that still show a placeholder, so buyers always see the exact finish they will receive.
   - [ ] **Distinct Gallery per Coffee:** Give each lot its own beans, brew and origin photos instead of shared shots, so each coffee feels like its own story.
   - [ ] **Reshoot Off-Brief Images:** Replace the About roastery photo (it shows another brand) and lighten the home hero to match the art direction.
   - [ ] **Subscription Image in Cart:** Show a product image for subscriptions in the cart and order summary, like every other line.
   - [ ] **Polished Placeholders:** Restore the coloured placeholder style for any slot that is still waiting on a photo.
 
-- [ ] **Shareable Portfolio Link**
-  - [ ] **Social Share Card:** A branded preview image when the Meridian link is shared in messages, LinkedIn or a portfolio, which matters most for the portfolio audience.
+- [x] **Shareable Portfolio Link**
+  - [x] **Social Share Card:** A branded preview image when the Meridian link is shared in messages, LinkedIn or a portfolio, which matters most for the portfolio audience.
 
 - [ ] **Graceful Dead Ends**
   - [ ] **Branded 404 Page:** A page-not-found screen in Meridian's style that points visitors back to the two lanes, instead of the default framework page.

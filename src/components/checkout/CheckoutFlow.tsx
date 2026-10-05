@@ -4,8 +4,10 @@ import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import { Button, ButtonLink } from "@/components/ui/Button";
 import { TextField } from "@/components/ui/Field";
+import { Select } from "@/components/ui/Select";
 import { OrderSummary } from "@/components/checkout/OrderSummary";
 import { useCart } from "@/lib/cart";
+import { shippingCountries } from "@/lib/countries";
 import { orderReference, saveOrder } from "@/lib/order";
 import { formatPrice } from "@/lib/types";
 
@@ -29,6 +31,11 @@ const methods: Record<Method, { label: string; eta: string }> = {
 
 type Errors = Record<string, string>;
 
+const countryOptions = [
+  { value: "", label: "Select a country" },
+  ...shippingCountries.map((c) => ({ value: c as string, label: c })),
+];
+
 const digitsOnly = (v: string) => v.replace(/\D/g, "");
 
 function validateContact(v: { name: string; email: string }): Errors {
@@ -50,7 +57,7 @@ function validateDelivery(v: {
   if (v.city.trim().length < 2) e.city = "Enter a city.";
   if (!/^[A-Za-z0-9][A-Za-z0-9 -]{2,9}$/.test(v.postcode.trim()))
     e.postcode = "Enter a valid postcode.";
-  if (v.country.trim().length < 2) e.country = "Enter a country.";
+  if (!v.country) e.country = "Select a country we ship to.";
   return e;
 }
 
@@ -275,16 +282,23 @@ export function CheckoutFlow() {
                 }
               />
             </div>
-            <TextField
-              id="country"
-              label="Country"
-              autoComplete="country-name"
-              value={delivery.country}
-              error={errors.country}
-              onChange={(e) =>
-                setDelivery({ ...delivery, country: e.target.value })
-              }
-            />
+            <div>
+              <span id="country-label" className="label block text-ink-muted">
+                Country
+              </span>
+              <Select
+                labelledBy="country-label"
+                value={delivery.country}
+                options={countryOptions}
+                onChange={(country) => setDelivery({ ...delivery, country })}
+                className="mt-2 [&>button]:h-12 [&>button]:rounded-(--radius-card) [&>ul]:left-0 [&>ul]:right-auto"
+              />
+              {errors.country && (
+                <p role="alert" className="mt-1.5 text-xs text-roast">
+                  {errors.country}
+                </p>
+              )}
+            </div>
           </div>
 
           <fieldset className="mt-8">

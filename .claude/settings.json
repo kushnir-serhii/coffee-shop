@@ -16,6 +16,11 @@
             "type": "command",
             "command": "node \"$CLAUDE_PROJECT_DIR/.awos-tune/hooks/check-components.mjs\"",
             "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/format-file.mjs\"",
+            "timeout": 30
           }
         ]
       }

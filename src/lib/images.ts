@@ -20,13 +20,20 @@ const available = new Set<string>([
 
   // equipment — one file per finish (1:1)
   "equipment/atlas-e1-grinder-graphite.webp",
+  "equipment/atlas-e1-grinder-bone.webp",
   "equipment/atlas-e1-grinder-roast.webp",
   "equipment/atlas-h1-hand-grinder-graphite.webp",
   "equipment/atlas-h1-hand-grinder-bone.webp",
-  "equipment/meridian-one-espresso-bone.webp",
-  "equipment/pour-kettle-900-bone.webp",
   "equipment/gram-scale-02-graphite.webp",
+  "equipment/gram-scale-02-bone.webp",
   "equipment/meridian-dripper-bone.webp",
+  "equipment/meridian-dripper-origin.webp",
+  "equipment/meridian-dripper-roast.webp",
+  "equipment/meridian-one-espresso-bone.webp",
+  "equipment/meridian-one-espresso-graphite.webp",
+  "equipment/pour-kettle-900-bone.webp",
+  "equipment/pour-kettle-900-graphite.webp",
+  "equipment/pour-kettle-900-origin.webp",
 
   // editorial
   "editorial/home-hero.webp",

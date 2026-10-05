@@ -6,18 +6,13 @@ import { Label } from "@/components/ui/Primitives";
 import { useCart } from "@/lib/cart";
 import { formatPrice } from "@/lib/types";
 import { beans } from "@/lib/products";
+import { defaultFrequency, frequencies, type Frequency } from "@/lib/subscription";
 
 /**
  * The subscription configurator as a real buy box rather than the homepage
  * teaser: it adds a recurring line to the cart, so the flow ends in the same
  * checkout as everything else.
  */
-
-const frequencies = [
-  { key: "1w", label: "Weekly", weeks: 1, discount: 0.15 },
-  { key: "2w", label: "Every 2 weeks", weeks: 2, discount: 0.12 },
-  { key: "4w", label: "Monthly", weeks: 4, discount: 0.1 },
-] as const;
 
 const sizes = [
   { key: "250", label: "250 g", base: 1550 },
@@ -47,7 +42,7 @@ const plans = [
 
 export function Plan() {
   const { add } = useCart();
-  const [freq, setFreq] = useState<(typeof frequencies)[number]>(frequencies[1]);
+  const [freq, setFreq] = useState<Frequency>(defaultFrequency);
   const [size, setSize] = useState<(typeof sizes)[number]>(sizes[0]);
   const [grind, setGrind] = useState<(typeof grinds)[number]>(grinds[0]);
   const [plan, setPlan] = useState<(typeof plans)[number]>(plans[0]);

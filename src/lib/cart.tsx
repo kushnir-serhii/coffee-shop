@@ -40,7 +40,7 @@ export interface CartLine {
 
 export type CartLineInput = Omit<CartLine, "id" | "qty"> & { qty?: number };
 
-/** Free over this, flat rate below it — mirrored in PDP copy. */
+/** Free over this (or with any subscription), flat rate below — mirrored in PDP copy. */
 export const FREE_SHIPPING_CENTS = 4000;
 export const SHIPPING_FLAT_CENTS = 590;
 export const MAX_QTY = 12;
@@ -57,7 +57,11 @@ export function lineId(input: CartLineInput): string {
 export function cartTotals(lines: CartLine[]) {
   const subtotalCents = lines.reduce((n, l) => n + l.unitPriceCents * l.qty, 0);
   const count = lines.reduce((n, l) => n + l.qty, 0);
-  const freeShipping = subtotalCents === 0 || subtotalCents >= FREE_SHIPPING_CENTS;
+  const hasSubscription = lines.some((l) => l.recurring);
+  const freeShipping =
+    subtotalCents === 0 ||
+    subtotalCents >= FREE_SHIPPING_CENTS ||
+    hasSubscription;
   const shippingCents = freeShipping ? 0 : SHIPPING_FLAT_CENTS;
   return {
     count,
