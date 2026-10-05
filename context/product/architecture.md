@@ -45,7 +45,8 @@
 - **Payments:** none. Checkout is a demo and only keeps the card's last four digits on the device _(confirmed non-goal)_.
 - **Order Fulfilment / Email:** none _(confirmed non-goal)_.
 - **Fonts:** Google Fonts, self-hosted at build time by `next/font` (no request reaches Google at runtime) _(existing)_.
-- **Analytics:** none. The user confirmed that analytics, sitemap and robots are not needed for a link-shared portfolio piece _(confirmed)_.
+- **Analytics:** none. The user confirmed that analytics and a sitemap are not needed for a link-shared portfolio piece _(confirmed)_.
+- **Crawler blocking:** to stay inside the Vercel Hobby limits, `src/app/robots.ts` disallows every crawler except link-preview bots (so share cards still work), and `next.config.ts` sends `X-Robots-Tag: noindex, nofollow` on every response _(confirmed)_. Bots that ignore robots.txt are left to the Vercel Firewall (Bot Protection and AI Bots managed rules, set in the dashboard) _(confirmed)_.
 
 ---
 

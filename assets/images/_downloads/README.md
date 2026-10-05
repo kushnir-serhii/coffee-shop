@@ -14,5 +14,5 @@ python scripts/prepare-images.py             # actually write the files
 It crops each image to the right aspect ratio, resizes it, and writes it out as WebP
 under the correct name in `coffee/`, `equipment/` or `editorial/`.
 
-This folder is working material — nothing here is served. Delete it once the
-prepared files are in place.
+This folder holds source originals only — it sits outside `public/`, so nothing
+here is deployed. Keep the files so the script can be re-run.
